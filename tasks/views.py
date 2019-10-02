@@ -20,6 +20,7 @@ def task_detail(request, pk, template_name='tasks/task_detail.html'):
     
     context = {}
     context['task'] = task
+    context['students'] = task.students.all()
     return render(request, template_name, context)
 
 
@@ -50,6 +51,7 @@ def task_create(request, template_name='tasks/task_form.html'):
         task = form.save(commit=False)
         task.user = request.user
         task.save()
+        form.save_m2m()
         return redirect('tasks:task_list')
 
     return render(request, template_name, {'form':form})
@@ -57,17 +59,20 @@ def task_create(request, template_name='tasks/task_form.html'):
 
 @login_required
 def task_update(request, pk, template_name='tasks/task_form.html'):
-    if request.user.is_superuser:
-        task = get_object_or_404(Task, pk=pk)
-    else:
-        task = get_object_or_404(Task, pk=pk)
-
-    form = UpdateTaskForm(task, request.POST or None)
     
-    if form.is_valid():
-        form.save()
+    task = get_object_or_404(Task, pk=pk)
 
-        return redirect('tasks:task_list')
+    if request.method == 'POST':
+        form = UpdateTaskForm(task, request.POST)
+        
+        if form.is_valid():
+            form.save()
+            form.save_m2m()
+            return redirect('tasks:task_list')
+    else:
+        form = UpdateTaskForm(task)
+
+    
     return render(request, template_name, {'form':form})
 
 @login_required

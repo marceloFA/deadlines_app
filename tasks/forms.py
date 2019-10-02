@@ -28,7 +28,10 @@ class TaskForm(forms.ModelForm):
         widget=DatePickerInput(format='%Y-%m-%d')
     )
 
-
+    students = forms.ModelMultipleChoiceField(
+        queryset=Student.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+        )
 
 
 class UpdateTaskForm(TaskForm):
@@ -40,5 +43,3 @@ class UpdateTaskForm(TaskForm):
     class Meta:
         model = Task
         fields = '__all__'
-
-    students = forms.ModelMultipleChoiceField(queryset=Student.objects.all())
