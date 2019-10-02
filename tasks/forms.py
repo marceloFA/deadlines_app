@@ -32,14 +32,3 @@ class TaskForm(forms.ModelForm):
         queryset=Student.objects.all(),
         widget=forms.CheckboxSelectMultiple
         )
-
-
-class UpdateTaskForm(TaskForm):
-
-    def __init__(self,task,*args,**kwargs):
-        super (TaskForm,self ).__init__(*args,**kwargs) # populates the Task
-        self.fields['students'].queryset = task.students.all()
-
-    class Meta:
-        model = Task
-        fields = '__all__'

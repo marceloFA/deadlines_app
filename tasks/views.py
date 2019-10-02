@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 # custom imports
 from tasks.models import Task
 from users.models import Student
-from tasks.forms import TaskForm, UpdateTaskForm
+from tasks.forms import TaskForm
 from datetime import datetime
 
 
@@ -59,20 +59,17 @@ def task_create(request, template_name='tasks/task_form.html'):
 
 @login_required
 def task_update(request, pk, template_name='tasks/task_form.html'):
-    
-    task = get_object_or_404(Task, pk=pk)
-
-    if request.method == 'POST':
-        form = UpdateTaskForm(task, request.POST)
-        
-        if form.is_valid():
-            form.save()
-            form.save_m2m()
-            return redirect('tasks:task_list')
+    if request.user.is_superuser:
+        task = get_object_or_404(Task, pk=pk)
     else:
-        form = UpdateTaskForm(task)
+        task = get_object_or_404(Task, pk=pk)
 
-    
+    form = TaskForm(request.POST or None, instance=task)
+
+    if form.is_valid():
+        form.save()
+
+        return redirect('tasks:task_list')
     return render(request, template_name, {'form':form})
 
 @login_required
