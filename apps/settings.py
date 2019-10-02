@@ -144,3 +144,6 @@ LOGIN_URL = '/admin/login/'
 AUTH_USER_MODEL = 'users.Student' # Tells django that the user model is a custom ones
 
 AUTH_PASSWORD_VALIDATORS = []
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
