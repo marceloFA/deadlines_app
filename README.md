@@ -1,6 +1,6 @@
-# A Tasks app
+# A Deadlines app
 
-This is a small Django project to register and manage academic Tasks
+This is a small Django project to register and manage academic Deadlines
 Here are the current django apps that compose this project
 - tasks (related to tasks creation and mangement)
 - theme (not in use anymore, can be deleted)
