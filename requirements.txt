@@ -1,0 +1,4 @@
+Django>=2.2,<2.3
+django-jquery
+django-bootstrap4
+django-bootstrap-datepicker-plus

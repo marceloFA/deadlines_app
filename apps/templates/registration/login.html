@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% load bootstrap4 %}
+{% block title %}
+  Register a new Student
+{% endblock %}
+
+{% block content %}
+  <h2>Register</h2>
+  <form method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+      {% buttons %}
+        <button type="submit" class="btn btn-primary">Sign up</button>
+      {% endbuttons %}
+  </form>
+<p>In case you don't have an account, click here for <a href="/register"><strong>register</strong></a></p>
+{% endblock %}
