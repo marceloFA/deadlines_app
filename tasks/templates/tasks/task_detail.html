@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load %}
+{% load mathfilters %}
 {% block content %}
 <!-- Task info -->
 
@@ -11,7 +11,8 @@
       aria-valuemin="0" aria-valuemax="100">{{task.progress_percentage}}%</div>
   </div>
   <br>
-  <h4 class="display-8">{{ task.days_left }} days left</h4>
+  <h4 class="display-8">{{ task.days_left|abs }} days {% if task.days_left >= 0 %} left {% else %} past {% endif %}
+  </h4>
   <h4 class="display-8">{{ task.deadline }}</h4>
   <hr class="my-4">
   <h4 class="display-8">Students:</h4>

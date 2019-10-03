@@ -32,11 +32,7 @@ def task_list(request, template_name='tasks/task_list.html'):
     for t in tasks:
         t.days_left = get_days_left(t.deadline)
 
-    current_tasks = list(filter(lambda t: t.days_left >= 0, tasks))
-    past_tasks = list(filter(lambda t: t.days_left < 0, tasks))
-
-    context['current_tasks'] = current_tasks
-    context['past_tasks'] = past_tasks
+    context['current_tasks'], context['past_tasks'] = filter_tasks(tasks)
 
     return render(request, template_name, context)
 
@@ -93,7 +89,17 @@ def get_days_left(deadline):
 def get_progress_percentage(task):
     ''' Return the percentage of time left for a certain task based on its deadline date '''
     created_at_date = task.created_at.date()
-    total_days = (task.deadline - created_at_date).days 
-    progress_percentage = 100 - (100 * task.days_left / total_days) if task.days_left > 0 else 100
+    total_days = (task.deadline - created_at_date).days
+    progress_percentage = 100 - \
+        (100 * task.days_left / total_days) if task.days_left > 0 else 100
     return int(progress_percentage)
 
+
+def filter_tasks(tasks):
+    ''' This method filter Task instances in two categoires
+         current tasks and past task, depending on the days_left field
+     '''
+    current_tasks = list(filter(lambda t: t.days_left >= 0, tasks))
+    past_tasks = list(filter(lambda t: t.days_left < 0, tasks))
+
+    return current_tasks, past_tasks
