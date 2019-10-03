@@ -75,7 +75,7 @@ def task_delete(request, pk, template_name='tasks/task_confirm_delete.html'):
     if request.user.is_superuser:
         task = get_object_or_404(Task, pk=pk)
     else:
-        task = get_object_or_404(Task, pk=pk, user=request.user)
+        task = get_object_or_404(Task, pk=pk, students=request.user)
     if request.method == 'POST':
         task.delete()
         return redirect('tasks:task_list')
