@@ -69,7 +69,7 @@ def deactivate(request):
         password = request.POST.get('password')
         print(password)
         if request.user.check_password(password):
-            request.user.is_active = 0
+            request.user.is_active = False
             request.user.save()
             messages.success(request, 'Your account has been deactivated')
             return redirect('tasks:task_list')
