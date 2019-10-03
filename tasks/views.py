@@ -17,7 +17,7 @@ def task_detail(request, pk, template_name='tasks/task_detail.html'):
 
     task.days_left = get_days_left(task.deadline)
     task.progress_percentage = get_progress_percentage(task)
-    task.progress_background = get_progress_background(task.progress_percentage, task.days_left)
+    task.progress_background = get_progress_background(task.progress_percentage)
     context = {}
     context['task'] = task
     context['students'] = task.students.all()
@@ -105,17 +105,18 @@ def filter_tasks(tasks):
     return current_tasks, past_tasks
 
 
-
-def get_progress_background(progress, days_left):
+def get_progress_background(progress):
     """
-    Gets the appropriate background color for a given amount of time left in a project
+    Gets the appropriate background color for a given amount of progress made in a project
     :param progress: the amount of progress between the start date and the ending date (0-100)
-    :param days_left: the number of days for a given task
-    :return: a string representing the corresponding color for a background with the given number of days left
+    :return: a string representing the corresponding color for a background with the given amount of progress towards
+    the end date
     """
-    if days_left < 0:
+    if progress == 100:
+        background_color = 'bg-info'
+    elif progress >= 90:
         background_color = 'bg-danger'
-    elif progress > 70:
+    elif progress >= 70:
         background_color = 'bg-warning'
     else:
         background_color = 'bg-success'
