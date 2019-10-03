@@ -97,5 +97,5 @@ def get_progress_percentage(task):
     ''' Return the percentage of time left for a certain task based on its deadline date '''
     created_at_date = task.created_at.date()
     total_days = (task.deadline - created_at_date).days 
-    progress_percentage = 100 - (100 * task.days_left / total_days)
+    progress_percentage = 100 - (100 * task.days_left / total_days) if task.days_left else 100
     return int(progress_percentage)
