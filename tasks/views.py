@@ -9,44 +9,42 @@ from datetime import datetime
 
 
 def task_detail(request, pk, template_name='tasks/task_detail.html'):
-    
+
     try:
         task = Task.objects.get(pk=pk)
     except Task.DoesNotExist:
         raise Http404('This Task does not exist :0')
-    
+
     task.days_left = get_days_left(task.deadline)
     task.progress_percentage = get_progress_percentage(task)
-    
+
     context = {}
     context['task'] = task
     context['students'] = task.students.all()
     return render(request, template_name, context)
 
 
-#@login_required (use this decorator if deadlines must be seen only by users)
+# @login_required (use this decorator if deadlines must be seen only by users)
 def task_list(request, template_name='tasks/task_list.html'):
-    '''
-    use this logic if deadlines must be seen only by users:
-    if request.user.is_superuser:
-        task = task.objects.all()
-    else:
-       task = task.objects.filter(user=request.user)
-    '''
     tasks = Task.objects.all()
     context = {}
 
     for t in tasks:
         t.days_left = get_days_left(t.deadline)
-    
-    context['tasks'] = tasks
+
+    current_tasks = list(filter(lambda t: t.days_left >= 0, tasks))
+    past_tasks = list(filter(lambda t: t.days_left < 0, tasks))
+
+    context['current_tasks'] = current_tasks
+    context['past_tasks'] = past_tasks
 
     return render(request, template_name, context)
+
 
 @login_required
 def task_create(request, template_name='tasks/task_form.html'):
     form = TaskForm(request.POST or None)
-    
+
     if form.is_valid():
         task = form.save(commit=False)
         task.user = request.user
@@ -54,7 +52,7 @@ def task_create(request, template_name='tasks/task_form.html'):
         form.save_m2m()
         return redirect('tasks:task_list')
 
-    return render(request, template_name, {'form':form})
+    return render(request, template_name, {'form': form})
 
 
 @login_required
@@ -63,14 +61,14 @@ def task_update(request, pk, template_name='tasks/task_form.html'):
         task = get_object_or_404(Task, pk=pk)
     else:
         task = get_object_or_404(Task, pk=pk)
-
     form = TaskForm(request.POST or None, instance=task)
 
     if form.is_valid():
         form.save()
-
         return redirect('tasks:task_list')
-    return render(request, template_name, {'form':form})
+
+    return render(request, template_name, {'form': form})
+
 
 @login_required
 def task_delete(request, pk, template_name='tasks/task_confirm_delete.html'):
@@ -78,11 +76,10 @@ def task_delete(request, pk, template_name='tasks/task_confirm_delete.html'):
         task = get_object_or_404(Task, pk=pk)
     else:
         task = get_object_or_404(Task, pk=pk, user=request.user)
-    if request.method=='POST':
+    if request.method == 'POST':
         task.delete()
         return redirect('tasks:task_list')
-    return render(request, template_name, {'object':task})
-
+    return render(request, template_name, {'object': task})
 
 
 # Auxiliar methods:
@@ -99,3 +96,4 @@ def get_progress_percentage(task):
     total_days = (task.deadline - created_at_date).days 
     progress_percentage = 100 - (100 * task.days_left / total_days) if task.days_left > 0 else 100
     return int(progress_percentage)
+
