@@ -3,7 +3,8 @@ from django.contrib.auth import login, logout, authenticate
 from users.forms import StudentCreationForm
 from django.contrib.auth.forms import AuthenticationForm 
 from django.contrib import messages
-
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth.decorators import login_required
 
 def register(request):
     ''' Register a new Student '''
@@ -60,3 +61,20 @@ def logout_request(request):
     logged_out_message = "You logged out successfully"
     messages.success(request, logged_out_message)
     return redirect('tasks:task_list')
+
+@login_required
+def deactivate(request):
+    ''' To deactivate Student '''
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        print(password)
+        if request.user.check_password(password):
+            request.user.is_active = 0
+            request.user.save()
+            messages.success(request, 'Your account has been deactivated')
+            return redirect('tasks:task_list')
+        else:
+            messages.error(request, 'Invalid password')
+
+    # else it's a GET request:
+    return render(request, 'deactivation.html')
