@@ -9,6 +9,7 @@ from datetime import datetime
 
 
 def task_detail(request, pk, template_name='tasks/task_detail.html'):
+
     try:
         task = Task.objects.get(pk=pk)
     except Task.DoesNotExist:
@@ -16,8 +17,7 @@ def task_detail(request, pk, template_name='tasks/task_detail.html'):
 
     task.days_left = get_days_left(task.deadline)
     task.progress_percentage = get_progress_percentage(task)
-    task.progress_background = get_progress_background(task.progress_percentage, task.days_left)
-
+task.progress_background = get_progress_background(task.progress_percentage, task.days_left)
     context = {}
     context['task'] = task
     context['students'] = task.students.all()
@@ -26,20 +26,13 @@ def task_detail(request, pk, template_name='tasks/task_detail.html'):
 
 # @login_required (use this decorator if deadlines must be seen only by users)
 def task_list(request, template_name='tasks/task_list.html'):
-    '''
-    use this logic if deadlines must be seen only by users:
-    if request.user.is_superuser:
-        task = task.objects.all()
-    else:
-       task = task.objects.filter(user=request.user)
-    '''
     tasks = Task.objects.all()
     context = {}
 
     for t in tasks:
         t.days_left = get_days_left(t.deadline)
 
-    context['tasks'] = tasks
+    context['current_tasks'], context['past_tasks'] = filter_tasks(tasks)
 
     return render(request, template_name, context)
 
@@ -64,13 +57,12 @@ def task_update(request, pk, template_name='tasks/task_form.html'):
         task = get_object_or_404(Task, pk=pk)
     else:
         task = get_object_or_404(Task, pk=pk)
-
     form = TaskForm(request.POST or None, instance=task)
 
     if form.is_valid():
         form.save()
-
         return redirect('tasks:task_list')
+
     return render(request, template_name, {'form': form})
 
 
@@ -79,7 +71,7 @@ def task_delete(request, pk, template_name='tasks/task_confirm_delete.html'):
     if request.user.is_superuser:
         task = get_object_or_404(Task, pk=pk)
     else:
-        task = get_object_or_404(Task, pk=pk, user=request.user)
+        task = get_object_or_404(Task, pk=pk, students=request.user)
     if request.method == 'POST':
         task.delete()
         return redirect('tasks:task_list')
@@ -98,8 +90,20 @@ def get_progress_percentage(task):
     ''' Return the percentage of time left for a certain task based on its deadline date '''
     created_at_date = task.created_at.date()
     total_days = (task.deadline - created_at_date).days
-    progress_percentage = 100 - (100 * task.days_left / total_days) if task.days_left > 0 else 100
+    progress_percentage = 100 - \
+        (100 * task.days_left / total_days) if task.days_left > 0 else 100
     return int(progress_percentage)
+
+
+def filter_tasks(tasks):
+    ''' This method filter Task instances in two categoires
+         current tasks and past task, depending on the days_left field
+     '''
+    current_tasks = list(filter(lambda t: t.days_left >= 0, tasks))
+    past_tasks = list(filter(lambda t: t.days_left < 0, tasks))
+
+    return current_tasks, past_tasks
+
 
 
 def get_progress_background(progress, days_left):

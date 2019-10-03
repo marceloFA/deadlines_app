@@ -1,31 +1,34 @@
 {% extends "base.html" %}
-{% load %}
+{% load mathfilters %}
 {% block content %}
-    <!-- Task info --> 
-    
-    <div class="jumbotron">
-        <h1 class="display-4">{{ task.event }}</h1>
-        <div class="progress" style="background-color: lightgray">
-            <div class="progress-bar progress-bar-striped progress-bar-animated {{task.progress_background}}" role="progressbar" style="width: {{task.progress_percentage}}%; color: black" aria-valuenow="{{task.progress_percentage}}" aria-valuemin="0" aria-valuemax="100">{{task.progress_percentage}}%</div>
-          </div>
-        <br>
-        <h4 class="display-8">{{ task.days_left }} days left</h4>
-        <h4 class="display-8">{{ task.deadline }}</h4>
-        <hr class="my-4">
-        <h4 class="display-8">Students:</h4>
-    
-        <!-- Students of this task -->
-        {% for student in students %}
-        <div class="col-sm">
-          <ul class="list-group list-group-flush" style="background-color: transparent">
-            <li class="list-group-item " style="background-color: transparent">
-              <h6> {{ student.name }} </h6>
-            </li>
-          </ul>
-        </div>
-        {% endfor %}
-        <a class="btn btn-warning btn-md" href="{% url 'tasks:task_update' task.id %}" role="button">Edit this task</a>
-        <a class="btn btn-danger btn-md" href="{% url 'tasks:task_delete' task.id %}" role="button">Delete this task</a>
-      </div>
+<!-- Task info -->
+
+<div class="jumbotron">
+  <h1 class="display-4">{{ task.event }}</h1>
+  <div class="progress" style="background-color: lightgray">
+    <div class="progress-bar progress-bar-striped progress-bar-animated {{task.progress_background}}" role="progressbar"
+      style="width: {{task.progress_percentage}}%; color: black" aria-valuenow="{{task.progress_percentage}}"
+      aria-valuemin="0" aria-valuemax="100">{{task.progress_percentage}}%</div>
+  </div>
+  <br>
+  <h4 class="display-8">{{ task.days_left|abs }} days {% if task.days_left >= 0 %} left {% else %} past {% endif %}
+  </h4>
+  <h4 class="display-8">{{ task.deadline }}</h4>
+  <hr class="my-4">
+  <h4 class="display-8">Students:</h4>
+
+  <!-- Students of this task -->
+  {% for student in students %}
+  <div class="col-sm">
+    <ul class="list-group list-group-flush" style="background-color: transparent">
+      <li class="list-group-item " style="background-color: transparent">
+        <h6> {{ student.name }} </h6>
+      </li>
+    </ul>
+  </div>
+  {% endfor %}
+  <a class="btn btn-warning btn-md" href="{% url 'tasks:task_update' task.id %}" role="button">Edit this task</a>
+  <a class="btn btn-danger btn-md" href="{% url 'tasks:task_delete' task.id %}" role="button">Delete this task</a>
+</div>
 
 {% endblock %}
