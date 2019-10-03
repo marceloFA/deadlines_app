@@ -3,3 +3,4 @@ django-jquery
 django-bootstrap4
 django-bootstrap-datepicker-plus
 django-multiselectfield
+django-mathfilters
