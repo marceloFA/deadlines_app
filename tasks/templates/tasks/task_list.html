@@ -1,29 +1,56 @@
 {% extends "base.html" %}
+{% load mathfilters %}
 
 {% block content %}
 
-    <h1>Tasks</h1>
+<!-- Current Tasks -->
+<h1>Current Tasks</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Event</th>
-                <th scope="col">Days Left</th>
-                <th scope="col">Deadline</th>
-                <!-- Other columns here-->
-            </tr>
-        </thead>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Event</th>
+            <th scope="col">Days Left</th>
+            <th scope="col">Deadline</th>
+        </tr>
+    </thead>
     <tbody>
-    {% for task in tasks %}
+        {% for task in current_tasks %}
         <tr>
             <th scope="row"><a href="{% url 'tasks:task_detail' task.id %}">{{ task.event }}</a></th>
             <td>{{ task.days_left }}</td>
             <td>{{ task.deadline }}</td>
         </tr>
-    {% endfor %}
+        {% endfor %}
     </tbody>
-    </table>
+</table>
 
-<a href="{% url 'tasks:task_new' %}">New</a>
+<a href="{% url 'tasks:task_new' %}">New Task</a>
+
+
+<hr class="my-5">
+
+
+<!-- Past Tasks -->
+<h1>Past Tasks</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Event</th>
+            <th scope="col">Days Passed</th>
+            <th scope="col">Deadline</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in past_tasks %}
+        <tr>
+            <th scope="row"><a href="{% url 'tasks:task_detail' task.id %}">{{ task.event }}</a></th>
+            <td>{{ task.days_left|abs }}</td> <!-- This is acctually a DAYS PASSED field -->
+            <td>{{ task.deadline }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

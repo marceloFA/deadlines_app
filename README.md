@@ -26,10 +26,3 @@ Now you can run the development web server:
     ./manage.py runserver
 
 To access the applications go to the URL <http://localhost:8000/>
-
-## State of the app (for contributors)
-
-What still needs to be implemented:
-
-- Student password reset (including template)
-- Student account deactivation (including template)

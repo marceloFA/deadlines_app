@@ -38,10 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap4',
-    #'jquery'
+    # 'jquery'
     'bootstrap_datepicker_plus',
     'users.apps.UsersConfig',
     'tasks',
+    'mathfilters',
 ]
 
 BOOTSTRAP4 = {
@@ -138,9 +139,12 @@ STATICFILES_DIRS = [
 ]
 
 
-
 LOGIN_URL = '/admin/login/'
 
-AUTH_USER_MODEL = 'users.Student' # Tells django that the user model is a custom ones
+# Tells django that the user model is a custom ones
+AUTH_USER_MODEL = 'users.Student'
 
 AUTH_PASSWORD_VALIDATORS = []
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
