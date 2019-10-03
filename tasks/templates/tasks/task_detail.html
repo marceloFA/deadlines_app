@@ -6,7 +6,7 @@
 <div class="jumbotron">
   <h1 class="display-4">{{ task.event }}</h1>
   <div class="progress" style="background-color: lightgray">
-    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar"
+    <div class="progress-bar progress-bar-striped progress-bar-animated {{task.progress_background}}" role="progressbar"
       style="width: {{task.progress_percentage}}%; color: black" aria-valuenow="{{task.progress_percentage}}"
       aria-valuemin="0" aria-valuemax="100">{{task.progress_percentage}}%</div>
   </div>
