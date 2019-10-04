@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'tasks',
     'mathfilters',
+    'submissions',
 ]
 
 BOOTSTRAP4 = {
