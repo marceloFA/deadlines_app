@@ -13,6 +13,10 @@ urlpatterns = [
     path('register/', user_views.register, name='register'),
     path('login/', user_views.login_request, name="login"),
     path('logout/', user_views.logout_request, name="logout"),
+
+    path('profile/', user_views.show_profile, name="profile"),
+    path('profile/edit/', user_views.edit_profile, name="edit-profile"),
+
     path('deactivate/', user_views.deactivate, name="deactivate"),
     path('reactivate/', user_views.reactivate, name="reactivate"),
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),

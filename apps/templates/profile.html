@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% load bootstrap4 %}
+{% block title %}
+{{ user.username }} profile
+{% endblock %}
+
+{% block content %}
+
+
+<div class="hero-unit">
+  <h1> {{ user.name }} profile  </h1>
+  
+  <p>
+
+  <ul >
+  {% for task in tasks %}
+        
+      <li scope="row">
+        <a href="{% url 'tasks:task_detail' task.id %}">
+          {{ task.event }}
+        </a>
+        <span class="badge badge-info">{{ task.days_left }}</span>
+        <span class="badge badge-inverse">{{ task.deadline }}</span>
+
+
+        
+      </li>
+            
+        {% endfor %}
+  </ul>
+    <a  class="btn btn-primary " href="{% url 'edit-profile' %}">
+      edit profile
+    </a>
+  </p>
+</div>
+{% endblock %}
