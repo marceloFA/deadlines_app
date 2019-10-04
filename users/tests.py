@@ -43,12 +43,12 @@ class StudentTestCase(TestCase):
 
         # Checking for routes that return webpages
         routes = ['/','/tasks/','/register/','/login/','/password_reset/'] # List of all the routes that return webpages
-        for i in routes:
-            response = c.get(i)
+        for route in routes:
+            response = c.get(route)
             self.assertEqual(response.status_code,200)
 
         # Checking for routes that redirect
         routes = ['/logout/']
-        for i in routes:
-            response = c.get(i)
+        for route in routes:
+            response = c.get(route)
             self.assertEqual(response.status_code,302)
