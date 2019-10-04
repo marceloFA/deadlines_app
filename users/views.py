@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
-from users.forms import StudentCreationForm
+from users.forms import StudentCreationForm, StudentChangeForm
 from django.contrib.auth.forms import AuthenticationForm 
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
 from .models import Student
+from tasks.models import Task
 
 def register(request):
     ''' Register a new Student '''
@@ -107,3 +108,32 @@ def reactivate(request):
 
     # else it's a GET request:
     return render(request, 'reactivation.html')
+
+def show_profile(request):
+    context = {}
+    context['tasks'] = Task.objects.filter(students=request.user.id)
+    # print(context['tasks'])
+
+    return render(request, 'profile.html', context)
+    
+def edit_profile(request):
+    form = StudentChangeForm(request.POST or None)
+    context = {}
+    context['form'] = form
+    if request.method == 'POST':
+        if form.is_valid():
+            student = Student.objects.get(id=request.user.id)
+            if(form.cleaned_data['username']):
+                student.username = form.cleaned_data['username']
+            if(form.cleaned_data['name']):
+                student.name = form.cleaned_data['name']
+            # print(form.cleaned_data['username'])
+            student.save()
+            
+            return redirect('tasks:task_list')
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f"{form.error_messages[msg]}")
+    
+
+    return render(request, 'edit-profile.html', context)
