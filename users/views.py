@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from users.forms import StudentCreationForm, StudentChangeForm
 from django.contrib.auth.forms import AuthenticationForm 
@@ -111,23 +111,29 @@ def reactivate(request):
 
 def show_profile(request):
     context = {}
+    # Load related Tasks
     context['tasks'] = Task.objects.filter(students=request.user.id)
-    # print(context['tasks'])
-
     return render(request, 'profile.html', context)
     
-def edit_profile(request):
-    form = StudentChangeForm(request.POST or None)
+def student_update(request, pk):
+    
+    # Get student
+    if request.user.is_superuser:
+        student = get_object_or_404(Student, pk=pk)
+    else:
+        student = get_object_or_404(Student, pk=pk)
+    
+    # fill form 
+    form = StudentChangeForm(request.POST or None, instance=student)
     context = {}
     context['form'] = form
+
     if request.method == 'POST':
         if form.is_valid():
-            student = Student.objects.get(id=request.user.id)
             if(form.cleaned_data['username']):
                 student.username = form.cleaned_data['username']
             if(form.cleaned_data['name']):
                 student.name = form.cleaned_data['name']
-            # print(form.cleaned_data['username'])
             student.save()
             
             return redirect('tasks:task_list')
@@ -135,5 +141,4 @@ def edit_profile(request):
             for msg in form.error_messages:
                 messages.error(request, f"{form.error_messages[msg]}")
     
-
     return render(request, 'edit-profile.html', context)

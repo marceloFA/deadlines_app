@@ -27,6 +27,6 @@ class StudentChangeForm(UserChangeForm):
         label='Student Name',
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'placeholder': 'Enter first and last name here'
+            'placeholder': 'Fill first and last name here'
         })
     )

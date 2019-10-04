@@ -9,29 +9,26 @@
 
 
 <div class="hero-unit">
-  <h1> {{ user.name }} profile  </h1>
-  
-  <p>
-
-  <ul >
-  {% for task in tasks %}
-        
-      <li scope="row">
+  <h2 class="my-2">Profile page</h2>
+  <hr>
+  <h4 class="my-2">Your current tasks:</h4>
+  <ul class="list-group list-group-flush">
+    {% for task in tasks %}    
+      <li  class="list-group-item">
         <a href="{% url 'tasks:task_detail' task.id %}">
           {{ task.event }}
         </a>
         <span class="badge badge-info">{{ task.days_left }}</span>
         <span class="badge badge-inverse">{{ task.deadline }}</span>
-
-
-        
       </li>
             
-        {% endfor %}
+    {% endfor %}
   </ul>
-    <a  class="btn btn-primary " href="{% url 'edit-profile' %}">
-      edit profile
+
+    <a class="btn btn-primary btn-sm my-4 " href="{% url 'edit_profile' user.id %}">
+      Edit your profile
     </a>
   </p>
 </div>
+
 {% endblock %}
