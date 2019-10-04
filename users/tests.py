@@ -1,6 +1,5 @@
 from django.test import TestCase, Client
 from .models import Student
-from apps import urls
 
 # Create your tests here.
 class StudentTestCase(TestCase):
@@ -49,6 +48,12 @@ class StudentTestCase(TestCase):
 
         # Checking for routes that redirect
         routes = ['/logout/']
+<<<<<<< HEAD
         for route in routes:
             response = c.get(route)
             self.assertEqual(response.status_code,302)
+=======
+        for i in routes:
+            response = c.get(i)
+            self.assertEqual(response.status_code,302)
+>>>>>>> 4a37ada640699f815ed5aa48b8e4a458236258cb
