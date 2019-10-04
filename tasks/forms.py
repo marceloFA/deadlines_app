@@ -30,6 +30,6 @@ class TaskForm(forms.ModelForm):
     )
 
     students = forms.ModelMultipleChoiceField(
-        queryset=Student.objects.all(),
+        queryset=Student.objects.filter(is_active=True),
         widget=forms.CheckboxSelectMultiple
     )
