@@ -79,6 +79,7 @@ def deactivate(request):
         if request.user.check_password(password):
             request.user.is_active = False
             request.user.save()
+            # NOTE: user will automatically log out
             messages.success(request, 'Your account has been deactivated')
             return redirect('tasks:task_list')
         else:
