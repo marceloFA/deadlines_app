@@ -29,6 +29,7 @@ def register(request):
 
 
 def login_request(request):
+
     ''' To log in a Student'''
     login_error_message = 'Invalid username or password :('
 
