@@ -35,7 +35,7 @@ class Task(ModelWithTimeStamp):
     qualis = models.CharField(max_length=10, choices=QUALIS_CHOICES)
     deadline = models.DateField()
     students = models.ManyToManyField(Student, blank=True)
-
+    
     def __str__(self):
         '''Console representation of a Task'''
         return self.event

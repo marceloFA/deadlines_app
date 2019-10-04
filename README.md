@@ -25,4 +25,10 @@ Now you can run the development web server:
 
     ./manage.py runserver
 
+## Running Tests
+
+To run tests on the application:
+
+    ./manage.py test
+
 To access the applications go to the URL <http://localhost:8000/>
