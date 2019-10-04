@@ -76,7 +76,6 @@ def deactivate(request):
     ''' To deactivate Student '''
     if request.method == 'POST':
         password = request.POST.get('password')
-        print(password)
         if request.user.check_password(password):
             request.user.is_active = False
             request.user.save()
