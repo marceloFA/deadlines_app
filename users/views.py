@@ -3,7 +3,9 @@ from django.contrib.auth import login, logout, authenticate
 from users.forms import StudentCreationForm
 from django.contrib.auth.forms import AuthenticationForm 
 from django.contrib import messages
-
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth.decorators import login_required
+from .models import Student
 
 def register(request):
     ''' Register a new Student '''
@@ -45,7 +47,15 @@ def login_request(request):
             else:
                 messages.error(request, login_error_message)
         else:
-            messages.error(request, login_error_message)
+            # prompt deactivated student to re-activate his account
+            try:
+                username = request.POST.get('username')
+                user = Student.objects.get(username=username)
+                messages.error(request, 'Your account has been deactivated so you must re-activate it before login.')
+            # student is doesn't exists so we believe this is invalid login
+            except Student.DoesNotExist:
+                messages.error(request, login_error_message)
+
     
     # else it's a GET request:
     form = AuthenticationForm(request.POST or None)
@@ -60,3 +70,40 @@ def logout_request(request):
     logged_out_message = "You logged out successfully"
     messages.success(request, logged_out_message)
     return redirect('tasks:task_list')
+
+@login_required
+def deactivate(request):
+    ''' To deactivate Student '''
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        if request.user.check_password(password):
+            request.user.is_active = False
+            request.user.save()
+            # NOTE: user will automatically log out
+            messages.success(request, 'Your account has been deactivated')
+            return redirect('tasks:task_list')
+        else:
+            messages.error(request, 'Invalid password')
+
+    # else it's a GET request:
+    return render(request, 'deactivation.html')
+
+def reactivate(request):
+    ''' To Reactivate Student '''
+    login_error_message = 'Invalid username or password :('
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = Student.objects.get(username=username)
+        if check_password(password, user.password):
+            user.is_active = True
+            user.save()
+            login(request, user)
+            messages.info(request, f'Reactivation is successful and now you\'re logged in as {username}')
+            return redirect('tasks:task_list')
+        else:
+            messages.error(request, login_error_message)
+
+    # else it's a GET request:
+    return render(request, 'reactivation.html')
