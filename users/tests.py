@@ -1,6 +1,5 @@
 from django.test import TestCase, Client
 from .models import Student
-from apps import urls
 
 # Create your tests here.
 class StudentTestCase(TestCase):
