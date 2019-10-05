@@ -5,17 +5,13 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('tasks', '0007_auto_20190930_0943'),
-    ]
+    dependencies = [("tasks", "0007_auto_20190930_0943")]
 
     operations = [
         migrations.AddField(
-            model_name='task',
-            name='event_url',
+            model_name="task",
+            name="event_url",
             field=models.CharField(blank=True, max_length=500, null=True),
         ),
-        migrations.DeleteModel(
-            name='StudentHasTask',
-        ),
+        migrations.DeleteModel(name="StudentHasTask"),
     ]

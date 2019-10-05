@@ -7,14 +7,20 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tasks', '0008_auto_20191001_1727'),
-        ('users', '0002_remove_student_tasks'),
+        ("tasks", "0008_auto_20191001_1727"),
+        ("users", "0002_remove_student_tasks"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='student',
-            name='task',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='students', to='tasks.Task'),
-        ),
+            model_name="student",
+            name="task",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="students",
+                to="tasks.Task",
+            ),
+        )
     ]

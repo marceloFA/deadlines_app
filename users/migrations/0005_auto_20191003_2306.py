@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('users', '0004_remove_student_task'),
-    ]
+    dependencies = [("users", "0004_remove_student_task")]
 
     operations = [
         migrations.AlterField(
-            model_name='student',
-            name='is_active',
+            model_name="student",
+            name="is_active",
             field=models.BooleanField(default=True),
-        ),
+        )
     ]

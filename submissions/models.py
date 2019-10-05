@@ -4,6 +4,7 @@ from tasks.models import Task
 
 # Create your models here.
 
+
 class Submissions(models.Model):
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
     tasks = models.ForeignKey(Task, on_delete=models.SET_NULL, null=True)

@@ -32,3 +32,12 @@ To run tests on the application:
     ./manage.py test
 
 To access the applications go to the URL <http://localhost:8000/>
+
+
+## Linting
+
+Added black to maintain PEP8 coding standard and cleanliness
+To run black, type the following in the terminal 
+inside your project directory: 
+
+`black .`
