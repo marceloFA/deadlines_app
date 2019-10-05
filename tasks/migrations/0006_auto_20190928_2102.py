@@ -9,20 +9,39 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('tasks', '0005_remove_task_created_by'),
+        ("tasks", "0005_remove_task_created_by"),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='task',
-            name='students',
-        ),
+        migrations.RemoveField(model_name="task", name="students"),
         migrations.CreateModel(
-            name='StudentHasTask',
+            name="StudentHasTask",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='Student', to=settings.AUTH_USER_MODEL)),
-                ('task', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='Task', to='tasks.Task')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "student",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="Student",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "task",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="Task",
+                        to="tasks.Task",
+                    ),
+                ),
             ],
         ),
     ]
