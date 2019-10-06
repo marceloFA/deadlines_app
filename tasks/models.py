@@ -54,8 +54,6 @@ class SubTask(models.Model):
     def __str__(self):
         """ Console representation of a SubTask object """
         return str([self.name, self.is_done])
-        """Console representation of a Task"""
-        return self.event
 
     def get_absolute_url(self):
         return reverse("task:task_edit", kwargs={"pk": self.pk})
