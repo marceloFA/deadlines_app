@@ -5,14 +5,26 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('tasks', '0002_task_students'),
-    ]
+    dependencies = [("tasks", "0002_task_students")]
 
     operations = [
         migrations.AlterField(
-            model_name='task',
-            name='qualis',
-            field=models.CharField(choices=[('A1', 'A1'), ('A2', 'A2'), ('B1', 'B1'), ('B2', 'B2'), ('C1', 'C1'), ('C2', 'C2'), ('C3', 'C3'), ('C4', 'C4'), ('C5', 'C5'), ('--', 'Does not apply')], max_length=10),
-        ),
+            model_name="task",
+            name="qualis",
+            field=models.CharField(
+                choices=[
+                    ("A1", "A1"),
+                    ("A2", "A2"),
+                    ("B1", "B1"),
+                    ("B2", "B2"),
+                    ("C1", "C1"),
+                    ("C2", "C2"),
+                    ("C3", "C3"),
+                    ("C4", "C4"),
+                    ("C5", "C5"),
+                    ("--", "Does not apply"),
+                ],
+                max_length=10,
+            ),
+        )
     ]

@@ -6,14 +6,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('tasks', '0009_task_students'),
-    ]
+    dependencies = [("tasks", "0009_task_students")]
 
     operations = [
         migrations.AlterField(
-            model_name='task',
-            name='students',
+            model_name="task",
+            name="students",
             field=models.ManyToManyField(blank=True, to=settings.AUTH_USER_MODEL),
-        ),
+        )
     ]

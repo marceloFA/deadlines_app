@@ -5,33 +5,31 @@ from bootstrap_datepicker_plus import DatePickerInput
 
 
 class TaskForm(forms.ModelForm):
+
     """ Form for editing or creating a Task object """
+
     class Meta:
         model = Task
-        fields = '__all__'
+        fields = "__all__"
 
     event = forms.CharField(
-        label='Event Name',
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Event Name'
-        })
+        label="Event Name",
+        widget=forms.TextInput(
+            attrs={"class": "form-control", "placeholder": "Event Name"}
+        ),
     )
 
     qualis = forms.CharField(
-        label='Qualis',
-        widget=forms.Select(choices=Task.QUALIS_CHOICES)
+        label="Qualis", widget=forms.Select(choices=Task.QUALIS_CHOICES)
     )
 
     deadline = forms.DateField(
-        required=True,
-        label='deadline',
-        widget=DatePickerInput(format='%Y-%m-%d')
+        required=True, label="deadline", widget=DatePickerInput(format="%Y-%m-%d")
     )
 
     students = forms.ModelMultipleChoiceField(
-        queryset=Student.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        queryset=Student.objects.filter(is_active=True),
+        widget=forms.CheckboxSelectMultiple,
     )
 
 class SubTaskForm(forms.Form):

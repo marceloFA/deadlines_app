@@ -8,13 +8,15 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('tasks', '0008_auto_20191001_1727'),
+        ("tasks", "0008_auto_20191001_1727"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='task',
-            name='students',
-            field=models.ManyToManyField(blank=True, null=True, to=settings.AUTH_USER_MODEL),
-        ),
+            model_name="task",
+            name="students",
+            field=models.ManyToManyField(
+                blank=True, null=True, to=settings.AUTH_USER_MODEL
+            ),
+        )
     ]

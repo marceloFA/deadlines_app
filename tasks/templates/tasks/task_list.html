@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load mathfilters %}
-
+{% load static %}
 {% block content %}
 
 <!-- Current Tasks -->
@@ -52,5 +52,9 @@
         {% endfor %}
     </tbody>
 </table>
+
+
+<img src="{% static "images/deadlines-timeline.png" %}" alt="Deadlines Timeline" class="img-fluid my-5 w-75 mx-auto d-block""/>
+
 
 {% endblock %}
