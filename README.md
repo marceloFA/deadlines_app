@@ -1,10 +1,11 @@
 # A Deadlines app
 
 This is a small Django project to register and manage academic Deadlines
+
 Here are the current django apps that compose this project
-- tasks (related to tasks creation and mangement)
-- theme (not in use anymore, can be deleted)
-- users (related to the Student that signup to use this app)
+- tasks (related to academic tasks mangement)
+- submissions ( manages submissions of tasks to academic events)
+- users (related to the Student that can signup to use this app)
 
 
 ## Install Required Packages
@@ -24,20 +25,19 @@ Before running the application we need to create the needed DB tables:
 Now you can run the development web server:
 
     ./manage.py runserver
+    
+To access the application go <http://localhost:8000/>
 
 ## Running Tests
+Tests are been added gradually, we intend to have in the nearest possible future a good test coverage.
 
-To run tests on the application:
+To run tests on the application execute:
 
-    ./manage.py test
-
-To access the applications go to the URL <http://localhost:8000/>
-
+    python manage.py test
 
 ## Linting
 
-Added black to maintain PEP8 coding standard and cleanliness
-To run black, type the following in the terminal 
-inside your project directory: 
+To maintain PEP8 coding standard we implement code linting.
+To run the linting tool execute: 
 
 `black .`
