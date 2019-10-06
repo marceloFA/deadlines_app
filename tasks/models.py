@@ -1,18 +1,9 @@
 from django.db import models
+from apps.models import ModelWithTimeStamp
 from django.urls import reverse
 from django.conf import settings
 from users.models import Student
 from multiselectfield import MultiSelectField
-
-
-class ModelWithTimeStamp(models.Model):
-    """ safely adds create_at field to any model that inherits this """
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
 
 
 class Task(ModelWithTimeStamp):

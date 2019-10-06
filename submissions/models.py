@@ -1,12 +1,20 @@
 from django.db import models
 from users.models import Student
 from tasks.models import Task
+from apps.models import ModelWithTimeStamp
 
-# Create your models here.
+class Submission(ModelWithTimeStamp):
+    ''' This model stores informations about academic task submissions '''
+    
+    students = models.ManyToManyField(Student, blank=False)
 
+    task = models.ForeignKey(Task, on_delete=models.SET_NULL,  null=True)
 
-class Submissions(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
-    tasks = models.ForeignKey(Task, on_delete=models.SET_NULL, null=True)
-    status = models.BooleanField()
-    url = models.CharField(max_length=300)
+    STATUS_CHOICES = (
+        ("1", "Not yet defined"),
+        ("2", "Under Revision"),
+        ("3", "Accepted"),
+        ("4", "Rejected"),
+    )
+
+    status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='1')
