@@ -15,7 +15,7 @@ class ModelWithTimeStamp(models.Model):
 
 
 class Task(ModelWithTimeStamp):
-    ''' The Task model saves informations about a task, including its deadline '''
+    """ The Task model saves informations about a task, including its deadline """
     # every value is a tuple (actual_value, human_redable_value)
     QUALIS_CHOICES = (
         ('A1', 'A1'),
@@ -37,8 +37,18 @@ class Task(ModelWithTimeStamp):
     students = models.ManyToManyField(Student, blank=True)
 
     def __str__(self):
-        '''Console representation of a Task'''
+        """ Console representation of a Task object """
         return self.event
 
     def get_absolute_url(self):
         return reverse('task:task_edit', kwargs={'pk': self.pk})
+
+class SubTask(models.Model):
+    """ This model represents a subtask of a task """
+    name = models.CharField(max_length=100)
+    is_done = models.BooleanField(default=False)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+
+    def __str__(self):
+        """ Console representation of a SubTask object """
+        return str([self.name, self.is_done])

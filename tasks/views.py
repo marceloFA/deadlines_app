@@ -1,10 +1,11 @@
+from django import forms
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 # custom imports
-from tasks.models import Task
+from tasks.models import Task, SubTask
 from users.models import Student
-from tasks.forms import TaskForm
+from tasks.forms import TaskForm, SubTaskForm
 from datetime import datetime
 
 
@@ -15,12 +16,21 @@ def task_detail(request, pk, template_name='tasks/task_detail.html'):
     except Task.DoesNotExist:
         raise Http404('This Task does not exist :0')
 
+    if request.method == 'POST': 
+        toggle(task,request.POST)
+        if request.POST.get('add'): 
+            ''' A Subtask object is created and saved '''
+            subtask = SubTask(name = request.POST.get('add') , task = task) 
+            subtask.save()
+
+    subtask_form = SubTaskForm(task = task)
     task.days_left = get_days_left(task.deadline)
     task.progress_percentage = get_progress_percentage(task)
     task.progress_background = get_progress_background(task.progress_percentage)
     context = {}
     context['task'] = task
     context['students'] = task.students.all()
+    context['subtasks'] = subtask_form
     return render(request, template_name, context)
 
 
@@ -122,3 +132,13 @@ def get_progress_background(progress):
         background_color = 'bg-success'
 
     return background_color
+
+def toggle(task, data):
+    ''' Toggles completion of subtasks based on form data '''
+    subtasks = SubTask.objects.all().filter(task = task)
+    for subtask in subtasks:
+        if data.get(subtask.name):
+            subtask.is_done = True
+        else:
+            subtask.is_done = False
+        subtask.save()

@@ -16,17 +16,40 @@
   <h4 class="display-8">{{ task.deadline }}</h4>
   <hr class="my-4">
   <h4 class="display-8">Students:</h4>
-
+  <br>
   <!-- Students of this task -->
-  {% for student in students %}
-  <div class="col-sm">
-    <ul class="list-group list-group-flush" style="background-color: transparent">
-      <li class="list-group-item " style="background-color: transparent">
-        <h6> {{ student.name }} </h6>
-      </li>
-    </ul>
-  </div>
-  {% endfor %}
+  {% if students %}
+    {% for student in students %}
+    <div class="col-sm">
+      <ul class="list-group list-group-flush" style="background-color: transparent">
+        <li class="list-group-item " style="background-color: transparent">
+          <h6> {{ student.name }} </h6>
+        </li>
+      </ul>
+    </div>
+    {% endfor %}
+  {% else %}
+    <h6>No students assigned to this task</h6>
+  {% endif %}
+
+  <hr>
+
+  <h4 class="display-8">Subtasks:</h4>
+
+  <br>
+
+  {% if subtasks %}
+    <form method="post">
+      {% csrf_token %}
+      {{ subtasks.as_p }}
+      <input type="submit" value="Save Checklist" class="btn btn-success"/>
+    </form>
+  {% else %}
+    <h6>No subtasks created for this task</h6>
+  {% endif %}
+
+  <br>
+
   <a class="btn btn-warning btn-md" href="{% url 'tasks:task_update' task.id %}" role="button">Edit this task</a>
   <a class="btn btn-danger btn-md" href="{% url 'tasks:task_delete' task.id %}" role="button">Delete this task</a>
 </div>
