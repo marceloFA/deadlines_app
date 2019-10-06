@@ -14,7 +14,6 @@ This project requires a few packages. To install them use the following command:
     pip install -r requirements.txt
 
 
-
 ## Running the Application
 
 Before running the application we need to create the needed DB tables:
@@ -31,8 +30,6 @@ To run tests on the application:
 
     ./manage.py test
 
-To access the applications go to the URL <http://localhost:8000/>
-
 
 ## Linting
 
@@ -41,3 +38,7 @@ To run black, type the following in the terminal
 inside your project directory: 
 
 `black .`
+
+## Application Access
+
+To access the applications go to the URL <http://localhost:8000/>
