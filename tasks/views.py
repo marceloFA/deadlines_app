@@ -26,7 +26,7 @@ def task_detail(request, pk, template_name="tasks/task_detail.html"):
 
     subtask_form = SubTaskForm(task = task)
     task.days_left = get_days_left(task.deadline)
-    task.progress_percentage = get_progress_percentage(task)
+    task.progress_percentage = get_progress_percentage_subtasks(task)
     task.progress_background = get_progress_background(task.progress_percentage)
     context = {}
     context['task'] = task
@@ -105,6 +105,20 @@ def get_progress_percentage(task):
         100 - (100 * task.days_left / total_days) if task.days_left > 0 else 100
     )
     return int(progress_percentage)
+
+def get_progress_percentage_subtasks(task):
+    """ Returns the percentage based on the subtasks completed, and also based on the deadline """
+    subtasks = SubTask.objects.all().filter(task = task)
+    total_subtasks , completed_subtasks = len(subtasks) , 0
+    for subtask in subtasks:
+        if subtask.is_done:
+            completed_subtasks+=1
+    
+    if task.deadline - datetime.now().date() <= 0:
+        progress_percentage = 100
+    else:
+        progress_percentage = int((completed_subtasks/total_subtasks)*100)
+    return progress_percentage
 
 
 def filter_tasks(tasks):
