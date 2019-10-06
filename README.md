@@ -41,3 +41,7 @@ To maintain PEP8 coding standard we implement code linting.
 To run the linting tool execute: 
 
 `black .`
+
+## License
+
+This project is licensed under the  GNU Version 3 License - see the [LICENSE.md](LICENSE.md) file for details
