@@ -23,8 +23,8 @@ def register(request):
             messages.info(request, logged_in_message)
             return redirect("tasks:task_list")
         else:
-            for msg in form.error_messages:
-                messages.error(request, f"{form.error_messages[msg]}")
+            for msg in form._errors:
+                messages.error(request, f"{form._errors[msg]}")
 
     # else it's a GET request:
     context = {"form": form}

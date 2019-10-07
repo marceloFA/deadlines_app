@@ -20,6 +20,14 @@ class StudentCreationForm(UserCreationForm):
         ),
     )
 
+    def clean(self): 
+        name = self.cleaned_data.get('name') 
+        username = self.cleaned_data.get('username') 
+
+        if len(str(name).split(" ")) != 2:  
+            self.add_error('name', 'Fill only first and last name here')
+        return self.cleaned_data 
+
 
 class StudentChangeForm(UserChangeForm):
     """ Custom form to change an student"""
