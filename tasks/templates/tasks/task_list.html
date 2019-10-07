@@ -28,7 +28,7 @@
             <th scope="row"><a href="{% url 'tasks:task_detail' task.id %}">{{ task.event }}</a></th>
             <td>{{ task.days_left }}</td>
             <td>{{ task.deadline }}</td>
-            <td> <div class="square {{ task.progress_color }}" style = "display: inline-block"></div> {{ task.get_progress_percentage }}% <div class="square" style="background-color: {{ task.progress_color }}; display: inline-block"></div></td>
+            <td> <div class="square {{ task.progress_color }}" style = "display: inline-block"></div> {{ task.get_progress_percentage }}% </td>
         </tr>
         {% endfor %}
     </tbody>
@@ -58,7 +58,7 @@
             <th scope="row"><a href="{% url 'tasks:task_detail' task.id %}">{{ task.event }}</a></th>
             <td>{{ task.days_left|abs }}</td> <!-- This is acctually a DAYS PASSED field -->
             <td>{{ task.deadline }}</td>
-            <td> <div class="square {{ task.progress_color }}" style = "display: inline-block"></div> {{ task.get_progress_percentage }}% <div class="square" style="background-color: {{ task.progress_color }}; display: inline-block"></div></td>
+            <td> <div class="square {{ task.progress_color }}" style = "display: inline-block"></div> {{ task.get_progress_percentage }}% </td>
         </tr>
         {% endfor %}
     </tbody>
