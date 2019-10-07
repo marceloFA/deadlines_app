@@ -12,6 +12,7 @@
             <th scope="col">Event</th>
             <th scope="col">Days Left</th>
             <th scope="col">Deadline</th>
+            <th scope="col">Done</th>
         </tr>
     </thead>
     <tbody>
@@ -20,6 +21,7 @@
             <th scope="row"><a href="{% url 'tasks:task_detail' task.id %}">{{ task.event }}</a></th>
             <td>{{ task.days_left }}</td>
             <td>{{ task.deadline }}</td>
+            <td>{{ task.is_done }}</td>
         </tr>
         {% endfor %}
     </tbody>
