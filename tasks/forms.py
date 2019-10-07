@@ -7,7 +7,7 @@ from bootstrap_datepicker_plus import DatePickerInput
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = "__all__"
+        exclude = ("is_done", )
 
     event = forms.CharField(
         label="Event Name",
@@ -28,3 +28,4 @@ class TaskForm(forms.ModelForm):
         queryset=Student.objects.filter(is_active=True),
         widget=forms.CheckboxSelectMultiple,
     )
+

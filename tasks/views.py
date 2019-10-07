@@ -76,6 +76,15 @@ def task_delete(request, pk, template_name="tasks/task_confirm_delete.html"):
         return redirect("tasks:task_list")
     return render(request, template_name, {"object": task})
 
+@login_required
+def task_done(request, pk, template_name="tasks/task_form.html"):
+    if request.user.is_superuser:
+        task = get_object_or_404(Task, pk=pk)
+    else:
+        task = get_object_or_404(Task, pk=pk, students=request.user)
+    task.is_done =  True
+    task.save()
+    return redirect("tasks:task_list")
 
 # Auxiliar methods:
 def get_days_left(deadline):
@@ -89,6 +98,8 @@ def get_progress_percentage(task):
     """ Return the percentage of time left for a certain task based on its deadline date """
     created_at_date = task.created_at.date()
     total_days = (task.deadline - created_at_date).days
+    if task.is_done:
+        return 100
     progress_percentage = (
         100 - (100 * task.days_left / total_days) if task.days_left > 0 else 100
     )
