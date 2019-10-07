@@ -5,7 +5,6 @@ from django.conf import settings
 from users.models import Student
 from multiselectfield import MultiSelectField
 
-
 class Task(ModelWithTimeStamp):
     """ The Task model saves informations about a task, including its deadline """
 
@@ -42,3 +41,27 @@ class Task(ModelWithTimeStamp):
 
     def get_absolute_url(self):
         return reverse("task:task_edit", kwargs={"pk": self.pk})
+
+    @property
+    def get_progress_percentage(self):
+        """ Return the percentage of time left for a certain task based on its deadline date """
+        created_at_date = self.created_at.date()
+        total_days = (self.deadline - created_at_date).days
+        progress_percentage = (
+            100 - (100 * self.days_left / total_days) if self.days_left > 0 else 100
+        )
+        return int(progress_percentage)
+
+    @property
+    def progress_color(self):
+        """ Assigns a color for completion badge, from black at 0% to green at 100% """
+        percentage = self.get_progress_percentage
+        if percentage == 100:
+            badge_color = "bg-info"
+        elif percentage >= 90:
+            badge_color = "bg-danger"
+        elif percentage >= 70:
+            badge_color = "bg-warning"
+        else:
+            badge_color = "bg-success"
+        return badge_color
