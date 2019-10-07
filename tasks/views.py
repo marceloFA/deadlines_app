@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -60,7 +60,7 @@ def task_update(request, pk, template_name="tasks/task_form.html"):
 
     if form.is_valid():
         form.save()
-        return redirect("tasks:task_list")
+        return redirect(f"/tasks/{pk}")
 
     return render(request, template_name, {"form": form})
 
@@ -76,15 +76,27 @@ def task_delete(request, pk, template_name="tasks/task_confirm_delete.html"):
         return redirect("tasks:task_list")
     return render(request, template_name, {"object": task})
 
+
 @login_required
-def task_done(request, pk, template_name="tasks/task_form.html"):
+def task_done(request, pk):
     if request.user.is_superuser:
         task = get_object_or_404(Task, pk=pk)
     else:
         task = get_object_or_404(Task, pk=pk, students=request.user)
     task.is_done =  True
     task.save()
-    return redirect("tasks:task_list")
+    return redirect(f"/tasks/{pk}")
+
+@login_required
+def task_undone(request, pk):
+    if request.user.is_superuser:
+        task = get_object_or_404(Task, pk=pk)
+    else:
+        task = get_object_or_404(Task, pk=pk, students=request.user)
+    task.is_done =  False
+    task.save()
+    return redirect(f"/tasks/{pk}")
+
 
 # Auxiliar methods:
 def get_days_left(deadline):
@@ -110,8 +122,8 @@ def filter_tasks(tasks):
     """ This method filter Task instances in two categoires
          current tasks and past task, depending on the days_left field
      """
-    current_tasks = list(filter(lambda t: t.days_left >= 0, tasks))
-    past_tasks = list(filter(lambda t: t.days_left < 0, tasks))
+    current_tasks = list(filter(lambda t: (t.days_left >= 0 and not t.is_done), tasks))
+    past_tasks = list(filter(lambda t: (t.days_left < 0 or t.is_done), tasks))
 
     return current_tasks, past_tasks
 
