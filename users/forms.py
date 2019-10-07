@@ -37,3 +37,40 @@ class StudentChangeForm(UserChangeForm):
             }
         ),
     )
+
+
+class AccountDeactivationForm(forms.Form):
+    password = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(
+            attrs={
+                "id": "password",
+                "class": "form-control",
+                "placeholder": "Password",
+            }
+        ),
+    )
+
+
+class ReactivationForm(forms.Form):
+    username = forms.CharField(
+        label="Username",
+        widget=forms.TextInput(
+            attrs={
+                "id": "username",
+                "class": "form-control",
+                "placeholder": "Username",
+            }
+        ),
+    )
+
+    password = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(
+            attrs={
+                "id": "password",
+                "class": "form-control",
+                "placeholder": "Password",
+            }
+        ),
+    )

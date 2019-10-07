@@ -1,21 +1,17 @@
 {% extends 'base.html' %}
-
 {% load bootstrap4 %}
+
 {% block title %}
     Deactivate Account
 {% endblock %}
 
 {% block content %}
   <h2>Deactivate</h2>
+
   <form method="post" class="form">
-    {% csrf_token %}
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-    </div>
-      {% buttons %}
+    {% bootstrap_form form %}
+    {% buttons %}
         <button type="submit" class="btn btn-danger">Deactivate</button>
-      {% endbuttons %}
+    {% endbuttons %}
   </form>
 {% endblock %}
-
