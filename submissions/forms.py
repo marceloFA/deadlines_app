@@ -11,7 +11,7 @@ class SubmissionForm(forms.ModelForm):
         exclude = ('event',)
 
     # The task that got submitted
-    tasks = forms.ModelChoiceField(
+    task = forms.ModelChoiceField(
         label='What task is associated with this submission (Neither is an option)',
         queryset=Task.objects.all()
         )
