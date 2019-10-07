@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
-from users.forms import StudentCreationForm, StudentChangeForm
+from users.forms import StudentCreationForm, StudentChangeForm, AccountDeactivationForm, \
+    ReactivationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
@@ -92,7 +93,9 @@ def deactivate(request):
             messages.error(request, "Invalid password")
 
     # else it's a GET request:
-    return render(request, "deactivation.html")
+    form = AccountDeactivationForm(request.POST or None)
+    context = {"form": form}
+    return render(request, "deactivation.html", context)
 
 
 def reactivate(request):
@@ -116,7 +119,9 @@ def reactivate(request):
             messages.error(request, login_error_message)
 
     # else it's a GET request:
-    return render(request, "reactivation.html")
+    form = ReactivationForm(request.POST or None)
+    context = {"form": form}
+    return render(request, "reactivation.html", context)
 
 
 @login_required
