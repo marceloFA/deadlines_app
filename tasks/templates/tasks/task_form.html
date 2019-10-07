@@ -1,13 +1,20 @@
 {% extends "base.html" %}
+{% load bootstrap4 %}
 
 {% block content %}
-    {{ form.media }}            {# Adds date-picker required JS and CSS #}
+    {{ form.media }}
 
-    <h2><a href="{% url 'tasks:task_list' %}">Task</a>: Edit</h2>
+    <form method="post" class="form">
+        <h2>
+            <a href="{% url 'tasks:task_list' %}">
+                Task
+            </a>: Edit
+        </h2>
 
-    <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit" />
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        {% endbuttons %}
     </form>
-
 {% endblock %}

@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
-from users.forms import StudentCreationForm, StudentChangeForm
+from users.forms import StudentCreationForm, StudentChangeForm, AccountDeactivationForm, \
+    ReactivationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
 from .models import Student
 from tasks.models import Task
+from submissions.models import Submission
 
 
 def register(request):
@@ -23,8 +25,8 @@ def register(request):
             messages.info(request, logged_in_message)
             return redirect("tasks:task_list")
         else:
-            for msg in form.error_messages:
-                messages.error(request, f"{form.error_messages[msg]}")
+            for msg in form._errors:
+                messages.error(request, f"{form._errors[msg]}")
 
     # else it's a GET request:
     context = {"form": form}
@@ -92,7 +94,9 @@ def deactivate(request):
             messages.error(request, "Invalid password")
 
     # else it's a GET request:
-    return render(request, "deactivation.html")
+    form = AccountDeactivationForm(request.POST or None)
+    context = {"form": form}
+    return render(request, "deactivation.html", context)
 
 
 def reactivate(request):
@@ -116,13 +120,16 @@ def reactivate(request):
             messages.error(request, login_error_message)
 
     # else it's a GET request:
-    return render(request, "reactivation.html")
+    form = ReactivationForm(request.POST or None)
+    context = {"form": form}
+    return render(request, "reactivation.html", context)
 
 
 @login_required
 def show_profile(request):
-    # Load related Tasks
-    context = {"tasks": Task.objects.filter(students=request.user.id)}
+    # Load related Tasks and submissions
+    context = {"tasks": Task.objects.filter(students=request.user.id),
+                "submissions": Submission.objects.filter(students=request.user.id)}
     return render(request, "profile.html", context)
 
 
