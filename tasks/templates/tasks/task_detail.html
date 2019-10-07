@@ -27,10 +27,10 @@
     </ul>
   </div>
   {% endfor %}
-  <a class="btn btn-warning btn-md" href="{% url 'tasks:task_update' task.id %}" role="button">Edit this task</a>
-  <a class="btn btn-danger btn-md" href="{% url 'tasks:task_delete' task.id %}" role="button">Delete this task</a>
+  <a class="btn btn-info btn-md" href="{% url 'tasks:task_update' task.id %}" role="button">Edit</a>
+  <a class="btn btn-danger btn-md" href="{% url 'tasks:task_delete' task.id %}" role="button">Delete</a>
   {% if not task.is_done %} 
-    <a class="btn btn-danger btn-md" href="{% url 'tasks:task_done' task.id %}" role="button">Mark as done this task</a>
+    <a class="btn btn-success btn-md" href="{% url 'tasks:task_done' task.id %}" role="button">Mark as done</a>
   {% endif %}
 </div>
 
