@@ -19,9 +19,7 @@ def task_detail(request, pk, template_name="tasks/task_detail.html"):
     task.days_left = get_days_left(task.deadline)
     task.progress_percentage = get_progress_percentage(task)
     task.progress_background = get_progress_background(task.progress_percentage)
-    context = {}
-    context["task"] = task
-    context["students"] = task.students.all()
+    context = {"task": task, "students": task.students.all()}
     return render(request, template_name, context)
 
 
