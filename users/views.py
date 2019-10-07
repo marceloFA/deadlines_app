@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
 from .models import Student
 from tasks.models import Task
+from submissions.models import Submission
 
 
 def register(request):
@@ -126,8 +127,9 @@ def reactivate(request):
 
 @login_required
 def show_profile(request):
-    # Load related Tasks
-    context = {"tasks": Task.objects.filter(students=request.user.id)}
+    # Load related Tasks and submissions
+    context = {"tasks": Task.objects.filter(students=request.user.id),
+                "submissions": Submission.objects.filter(students=request.user.id)}
     return render(request, "profile.html", context)
 
 
