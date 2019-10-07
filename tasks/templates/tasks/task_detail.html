@@ -11,7 +11,7 @@
       aria-valuemin="0" aria-valuemax="100">{{task.progress_percentage}}%</div>
   </div>
   <br>
-  <h4 class="display-8">{{ task.days_left|abs }} days {% if task.days_left >= 0 %} left {% else %} past {% endif %}
+  <h4 class="display-8">{{ task.days_left|abs }} days {% if task.days_left >= 0 %} until deadline {% else %} past since deadline {% endif %}
   </h4>
   <h4 class="display-8">{{ task.deadline }}</h4>
   <hr class="my-4">
@@ -27,8 +27,13 @@
     </ul>
   </div>
   {% endfor %}
-  <a class="btn btn-warning btn-md" href="{% url 'tasks:task_update' task.id %}" role="button">Edit this task</a>
-  <a class="btn btn-danger btn-md" href="{% url 'tasks:task_delete' task.id %}" role="button">Delete this task</a>
+  <a class="btn btn-info btn-md" href="{% url 'tasks:task_update' task.id %}" role="button">Edit</a>
+  <a class="btn btn-danger btn-md" href="{% url 'tasks:task_delete' task.id %}" role="button">Delete</a>
+  {% if task.is_done %} 
+    <a class="btn btn-info btn-md" href="{% url 'tasks:task_undone' task.id %}" role="button">Mark as undone</a>
+  {% else %}
+  <a class="btn btn-success btn-md" href="{% url 'tasks:task_done' task.id %}" role="button">Mark as done</a>
+  {% endif %}
 </div>
 
 {% endblock %}

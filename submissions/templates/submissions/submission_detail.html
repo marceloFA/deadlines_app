@@ -1,1 +1,31 @@
-To be implemented later on :D
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!-- Submission Details -->
+
+<div class="jumbotron">
+  <h1 class="display-4">A submission for <strong>{{ submission.task.event|truncatechars:20 }}</strong></h1>
+  <br>
+  <h4 class="display-8">{{ submission.get_status_display }}</h4>
+  <a href="{{ submission.paper_url }}" target="_blank" style=" vertical-align:text-bottom;">Paper url  
+    <img src="{% static 'icons/overleaf.png' %}" alt="overleaf icon" class="img-fluid" style=" height: 24px; margin-right: -16px; margin-bottom: -6px;"/>
+  </a>
+  <hr class="my-4">
+
+  <!-- Students of this Submission -->
+  <h4 class="display-8">Students:</h4>
+  {% for student in students %}
+  <div class="col-sm">
+    <ul class="list-group list-group-flush" style="background-color: transparent">
+      <li class="list-group-item " style="background-color: transparent">
+        <h6> {{ student.name }} </h6>
+      </li>
+    </ul>
+  </div>
+  {% endfor %}
+
+  <a class="btn btn-info btn-md" href="{% url 'submissions:submission_update' submission.id %}" role="button">Edit</a>
+  <a class="btn btn-danger btn-md" href="{% url 'submissions:submission_delete' submission.id %}" role="button">Delete</a>
+</div>
+
+{% endblock %}

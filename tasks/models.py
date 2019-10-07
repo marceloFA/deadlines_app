@@ -22,11 +22,18 @@ class Task(ModelWithTimeStamp):
         ("", "Does not apply"),
     )
 
+    STATUS_CHOICES = (
+        ("1", "Enable"),
+        ("2", "Canceled"),
+        ("3", "Done"),
+    )
+
     event = models.CharField(max_length=200)
     event_url = models.CharField(max_length=500, null=True, blank=True)
     qualis = models.CharField(max_length=10, choices=QUALIS_CHOICES)
     deadline = models.DateField()
     students = models.ManyToManyField(Student, blank=True)
+    is_done = models.BooleanField(default=False)
 
     def __str__(self):
         """Console representation of a Task"""

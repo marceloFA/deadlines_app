@@ -11,7 +11,7 @@ class SubmissionForm(forms.ModelForm):
         exclude = ('event',)
 
     # The task that got submitted
-    tasks = forms.ModelChoiceField(
+    task = forms.ModelChoiceField(
         label='What task is associated with this submission (Neither is an option)',
         queryset=Task.objects.all()
         )
@@ -27,3 +27,6 @@ class SubmissionForm(forms.ModelForm):
     status = forms.CharField(
         label="Submission status", widget=forms.Select(choices=Submission.STATUS_CHOICES)
     )
+
+    # Paper url
+    paper_url = forms.CharField(widget=forms.TextInput(attrs={'class': 'special'}))
