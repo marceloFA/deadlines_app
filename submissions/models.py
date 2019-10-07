@@ -20,3 +20,5 @@ class Submission(ModelWithTimeStamp):
     )
 
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='0')
+
+    paper_url = models.CharField(max_length=300, blank=True, null=True)

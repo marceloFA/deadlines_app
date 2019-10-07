@@ -27,3 +27,6 @@ class SubmissionForm(forms.ModelForm):
     status = forms.CharField(
         label="Submission status", widget=forms.Select(choices=Submission.STATUS_CHOICES)
     )
+
+    # Paper url
+    paper_url = forms.CharField(widget=forms.TextInput(attrs={'class': 'special'}))
