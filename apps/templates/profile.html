@@ -18,8 +18,15 @@
         <a href="{% url 'tasks:task_detail' task.id %}">
           {{ task.event }}
         </a>
-        <span class="badge badge-info">{{ task.days_left }}</span>
-        <span class="badge badge-inverse">{{ task.deadline }}</span>
+        {% if task.is_done %}
+        <span class="badge badge-{{ task.progress_colored }} mx-2">done</span>
+        {% elif not task.is_done and task.days_left < 0 %}
+        <span class="badge badge-{{ task.progress_colored }} mx-2">past event</span>
+        {% else %}
+        <span class="badge badge-{{ task.progress_colored }} mx-2">{{ task.days_left }} days left</span>
+        <span class="badge badge-inverse">deadine in {{ task.deadline }}</span>
+        {% endif %}
+        
       </li>
     {% empty %}
       <li  class="list-group-item">
@@ -35,7 +42,7 @@
         <a href="{% url 'submissions:submission_detail' submission.id %}">
           {{ submission.task}}
         </a>
-        <span class="badge badge-info">{{ submission.get_status_display }}</span>
+        <span class="badge badge-info mx-1">{{ submission.get_status_display }}</span>
       </li>
     {% empty %}
       <li  class="list-group-item">
@@ -46,9 +53,6 @@
 
     <a class="btn btn-primary btn-sm my-4 " href="{% url 'edit_profile' user.id %}">
       Edit your profile
-    </a>
-    <a class="btn btn-danger btn-sm my-4 " href="{% url 'deactivate' %}">
-      Deactivate account
     </a>
   </p>
 </div>

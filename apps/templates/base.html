@@ -3,13 +3,14 @@
 <head>
     <title>Tasks app</title>
     {% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
-    {% bootstrap_css %}         {# Embed Bootstrap CSS #}
     {% bootstrap_javascript jquery='full' %}  {# Embed Bootstrap JS+jQuery #}
     {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.min.css" %}">
 </head>
 
 <body>
     {% include "includes/navbar.html" %}
+    <br><br>
     <div class="container">
         <br>
         {% bootstrap_messages %}

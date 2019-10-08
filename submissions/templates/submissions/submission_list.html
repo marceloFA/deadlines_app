@@ -16,7 +16,8 @@
         {% for submission in submissions %}
         <tr>
             <th scope="row"><a href="{% url 'submissions:submission_detail' submission.id %}">{{ submission.task.event }}</a></th>
-            <td>{{ submission.get_status_display }}</td>
+            <td><span class="badge badge-{{submission.staus_background}}">{{ submission.get_status_display }}</span></td>
+            
         </tr>
         {% endfor %}
     </tbody>

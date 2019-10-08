@@ -16,9 +16,8 @@ def task_detail(request, pk, template_name="tasks/task_detail.html"):
     except Task.DoesNotExist:
         raise Http404("This Task does not exist :0")
 
-    task.days_left = get_days_left(task.deadline)
-    task.progress_percentage = get_progress_percentage(task)
-    task.progress_background = get_progress_background(task.progress_percentage)
+    task = get_context(task)
+
     context = {"task": task, "students": task.students.all()}
     return render(request, template_name, context)
 
@@ -28,8 +27,7 @@ def task_list(request, template_name="tasks/task_list.html"):
     tasks = Task.objects.all()
     context = {}
 
-    for t in tasks:
-        t.days_left = get_days_left(t.deadline)
+    tasks = [get_context(t) for t in tasks]
 
     context["current_tasks"], context["past_tasks"] = filter_tasks(tasks)
 
@@ -99,6 +97,27 @@ def task_undone(request, pk):
 
 
 # Auxiliar methods:
+
+
+def filter_tasks(tasks):
+    """ 
+    This method filter Task instances in two categories
+    current tasks and past task, depending on the days_left field
+     """
+    current_tasks = list(filter(lambda t: (t.days_left >= 0 and not t.is_done), tasks))
+    past_tasks = list(filter(lambda t: (t.days_left < 0 or t.is_done), tasks))
+
+    return current_tasks, past_tasks
+
+def get_context(task):
+    '''
+    Some context is required for each Task
+    '''
+    task.days_left = get_days_left(task.deadline)
+    task.progress_percentage = get_progress_percentage(task)
+    task.progress_background = get_progress_background(task.progress_percentage)
+    return task
+
 def get_days_left(deadline):
     """ Used to calculate how many days are left until a task deadline """
     now = datetime.now().date()
@@ -118,16 +137,6 @@ def get_progress_percentage(task):
     return int(progress_percentage)
 
 
-def filter_tasks(tasks):
-    """ This method filter Task instances in two categoires
-         current tasks and past task, depending on the days_left field
-     """
-    current_tasks = list(filter(lambda t: (t.days_left >= 0 and not t.is_done), tasks))
-    past_tasks = list(filter(lambda t: (t.days_left < 0 or t.is_done), tasks))
-
-    return current_tasks, past_tasks
-
-
 def get_progress_background(progress):
     """
     Gets the appropriate background color for a given amount of progress made in a project
@@ -136,12 +145,12 @@ def get_progress_background(progress):
     the end date
     """
     if progress == 100:
-        background_color = "bg-info"
+        background_color = "info"
     elif progress >= 90:
-        background_color = "bg-danger"
+        background_color = "danger"
     elif progress >= 70:
-        background_color = "bg-warning"
+        background_color = "warning"
     else:
-        background_color = "bg-success"
+        background_color = "success"
 
     return background_color
