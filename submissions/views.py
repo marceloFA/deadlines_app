@@ -55,8 +55,19 @@ def submission_create(request, template_name="submissions/submission_form.html")
 
 
 @login_required
-def submission_update(request, template_name="submissions/submission_form.html"):
-    pass
+def submission_update(request, pk, template_name="submissions/submission_form.html"):
+    if request.user.is_superuser:
+        submission = get_object_or_404(Submission, pk=pk)
+    else:
+        submission = get_object_or_404(Submission, pk=pk)
+
+    form = SubmissionForm(request.POST or None, instance=submission)
+
+    if form.is_valid():
+        form.save()
+        return redirect(f"/submissions/{pk}")
+
+    return render(request, template_name, {"form": form})
 
 @login_required
 def submission_delete(request, template_name="submissions/submission_confirm_delete.html"):
