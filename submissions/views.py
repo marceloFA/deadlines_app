@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
 
 # Custom imports
 from tasks.models import Task
@@ -31,14 +32,26 @@ def submission_detail(request, pk, template_name="submissions/submission_detail.
 def submission_list(request, template_name="submissions/submission_list.html"):
     
     submissions = Submission.objects.all()
+    n_submitted, approval_rate = get_statistics()
+
     for sub in submissions:
         sub.status_background = get_status_background(sub.status)
 
     context = {
         'submissions':submissions,
+        'total_submissions':n_submitted,
+        'approval_rate': approval_rate,
     }
 
     return render(request, template_name, context)
+
+
+def get_statistics():
+    n_submitted = Submission.objects.filter(status__in=[3,4,5]).count()
+    n_approved = Submission.objects.filter(status=4).count()
+    approval_rate =  n_approved // n_submitted *100
+    return n_submitted, approval_rate
+
 
 
 @login_required

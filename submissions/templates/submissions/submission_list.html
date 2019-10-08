@@ -5,6 +5,9 @@
 <!-- Current submissions -->
 <h1>Submissions</h1>
 
+
+
+<!--Submissions list-->
 <table class="table">
     <thead>
         <tr>
@@ -27,4 +30,15 @@
     <button type="button" class="btn btn-primary">New Submission</button>    
 </a>
 
+<!-- Submissions statistics card-->
+
+<div class="card my-5" style="width: 18rem;  float: right;">
+    <div class="card-body">
+      <h5 class="card-title">Statistics</h5>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Total Submissions: {{total_submissions}}</li>
+        <li class="list-group-item">Approval Rate: {{approval_rate}}%</li>
+      </ul>
+    </div>
+  </div>
 {% endblock %}
