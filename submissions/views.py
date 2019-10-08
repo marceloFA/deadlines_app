@@ -17,6 +17,8 @@ def submission_detail(request, pk, template_name="submissions/submission_detail.
     except Submission.DoesNotExist:
         raise Http404("This submission does not exist :0")
 
+    submission.status_background = get_status_background(submission.status)
+
     context = {
         'submission': submission,
         "students": submission.students.all(),
@@ -30,7 +32,7 @@ def submission_list(request, template_name="submissions/submission_list.html"):
     
     submissions = Submission.objects.all()
     for sub in submissions:
-        sub.staus_background = get_status_background(sub.status)
+        sub.status_background = get_status_background(sub.status)
 
     context = {
         'submissions':submissions,
