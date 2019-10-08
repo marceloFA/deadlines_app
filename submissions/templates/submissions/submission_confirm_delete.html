@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2><a href="{% url 'submissions:submission_list' %}">Submission</a>: Delete?</h2>
+
+<form method="post">
+    {% csrf_token %}
+    Are you sure you want to delete the submission for "{{ submission.task.event }}" ?<br/>
+    <div class="form-group">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </div>
+</form>
+
+{% endblock %}

@@ -26,8 +26,6 @@ def task_detail(request, pk, template_name="tasks/task_detail.html"):
 
     subtask_form = SubTaskForm(task = task)
     task.days_left = get_days_left(task.deadline)
-    task.progress_percentage = task.get_progress_percentage
-    task.progress_background = task.progress_color
 
     context = {}
     context['task'] = task
@@ -42,8 +40,7 @@ def task_list(request, template_name="tasks/task_list.html"):
     tasks = Task.objects.all()
     context = {}
 
-    for t in tasks:
-        t.days_left = get_days_left(t.deadline)
+    tasks = [get_context(t) for t in tasks]
 
     context["current_tasks"], context["past_tasks"] = filter_tasks(tasks)
 
@@ -111,32 +108,6 @@ def task_undone(request, pk):
     task.save()
     return redirect(f"/tasks/{pk}")
 
-def get_progress_percentage_subtasks(task):
-    """ Returns the percentage based on the subtasks completed, and also based on the deadline """
-    subtasks = SubTask.objects.all().filter(task = task)
-    total_subtasks , completed_subtasks = len(subtasks) , 0
-    for subtask in subtasks:
-        if subtask.is_done:
-            completed_subtasks+=1
-    
-    if (task.deadline - datetime.now().date()).days <= 0 or task.is_done:
-        progress_percentage = 100
-    elif total_subtasks == 0:
-        progress_percentage = 0
-    else:
-        progress_percentage = int((completed_subtasks/total_subtasks)*100)
-    return progress_percentage
-
-
-def filter_tasks(tasks):
-    """ This method filter Task instances in two categoires
-         current tasks and past task, depending on the days_left field
-     """
-    current_tasks = list(filter(lambda t: (t.days_left >= 0 and not t.is_done), tasks))
-    past_tasks = list(filter(lambda t: (t.days_left < 0 or t.is_done), tasks))
-
-    return current_tasks, past_tasks
-
 def toggle(task, data):
     ''' Toggles completion of subtasks based on form data '''
     subtasks = SubTask.objects.all().filter(task = task)
@@ -146,3 +117,29 @@ def toggle(task, data):
         else:
             subtask.is_done = False
         subtask.save()
+
+# Auxiliary methods:
+
+
+def filter_tasks(tasks):
+    """ 
+    This method filter Task instances in two categories
+    current tasks and past task, depending on the days_left field
+     """
+    current_tasks = list(filter(lambda t: (t.days_left >= 0 and not t.is_done), tasks))
+    past_tasks = list(filter(lambda t: (t.days_left < 0 or t.is_done), tasks))
+
+    return current_tasks, past_tasks
+
+def get_context(task):
+    '''
+    Some context is required for each Task
+    '''
+    task.days_left = get_days_left(task.deadline)
+    return task
+
+def get_days_left(deadline):
+    """ Used to calculate how many days are left until a task deadline """
+    now = datetime.now().date()
+    days_left = (deadline - now).days
+    return days_left

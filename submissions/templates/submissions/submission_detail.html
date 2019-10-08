@@ -6,7 +6,7 @@
 <div class="jumbotron">
   <h1 class="display-4">A submission for <strong>{{ submission.task.event|truncatechars:20 }}</strong></h1>
   <br>
-  <h4 class="display-8">{{ submission.get_status_display }}</h4>
+  <h4 class="display-8 text-{{ submission.status_background }}">{{ submission.get_status_display }}</h4>
   <a href="{{ submission.paper_url }}" target="_blank" style=" vertical-align:text-bottom;">Paper url  
     <img src="{% static 'icons/overleaf.png' %}" alt="overleaf icon" class="img-fluid" style=" height: 24px; margin-right: -16px; margin-bottom: -6px;"/>
   </a>

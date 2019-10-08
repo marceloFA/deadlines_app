@@ -44,7 +44,7 @@ class Task(ModelWithTimeStamp):
         return reverse('task:task_edit', kwargs={'pk': self.pk})
 
     @property
-    def get_progress_percentage(task):
+    def progress_percentage(task):
         """ Returns the percentage based on the subtasks completed, and also based on the deadline """
 
         subtasks = SubTask.objects.all().filter(task = task)
@@ -62,9 +62,9 @@ class Task(ModelWithTimeStamp):
         return progress_percentage
 
     @property
-    def progress_color(self):
-        """ Assigns a color for completion badge, from black at 0% to green at 100% """
-        percentage = self.get_progress_percentage
+    def progress_background(self):
+        """ Assigns a color for completion badge, from green to teal """
+        percentage = self.progress_percentage
         if percentage == 100:
             badge_color = "bg-info"
         elif percentage >= 90:

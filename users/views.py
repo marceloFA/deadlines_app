@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
-from users.forms import StudentCreationForm, StudentChangeForm, AccountDeactivationForm, \
-    ReactivationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
+
+# Custom imports
+from users.forms import StudentCreationForm, StudentChangeForm, AccountDeactivationForm, \
+    ReactivationForm
 from .models import Student
 from tasks.models import Task
+from tasks.views import get_context
 from submissions.models import Submission
 
 
@@ -128,7 +131,11 @@ def reactivate(request):
 @login_required
 def show_profile(request):
     # Load related Tasks and submissions
-    context = {"tasks": Task.objects.filter(students=request.user.id),
+    tasks = Task.objects.filter(students=request.user.id)
+    # get context
+    tasks = [get_context(t) for t in tasks]
+    
+    context = {"tasks": tasks,
                 "submissions": Submission.objects.filter(students=request.user.id)}
     return render(request, "profile.html", context)
 

@@ -7,7 +7,7 @@
   <h1 class="display-4">{{ task.event }}</h1>
   <div class="progress" style="background-color: lightgray">
     <div class="progress-bar progress-bar-striped progress-bar-animated {{task.progress_background}}" role="progressbar"
-      style="width: {{task.progress_percentage}}%; color: black" aria-valuenow="{{task.progress_percentage}}"
+      style="width: {{task.progress_percentage}}%; color: black;" aria-valuenow="{{task.progress_percentage}}"
       aria-valuemin="0" aria-valuemax="100">{{task.progress_percentage}}%</div>
   </div>
   <br>
@@ -18,8 +18,7 @@
   <h4 class="display-8">Students:</h4>
   <br>
   <!-- Students of this task -->
-  {% if students %}
-    {% for student in students %}
+  {% for student in students %}
     <div class="col-sm">
       <ul class="list-group list-group-flush" style="background-color: transparent">
         <li class="list-group-item " style="background-color: transparent">
@@ -27,10 +26,9 @@
         </li>
       </ul>
     </div>
-    {% endfor %}
-  {% else %}
+  {% empty %}
     <h6>No students assigned to this task</h6>
-  {% endif %}
+  {% endfor %}
 
   <hr>
 
