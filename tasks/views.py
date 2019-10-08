@@ -19,19 +19,21 @@ def task_detail(request, pk, template_name="tasks/task_detail.html"):
 
     if request.method == 'POST': 
         toggle(task,request.POST)
-        if request.POST.get('add'): 
+        if request.POST.get('add_subtask'): 
             ''' A Subtask object is created and saved '''
-            subtask = SubTask(name = request.POST.get('add') , task = task) 
+            subtask = SubTask(name = request.POST.get('add_subtask') , task = task) 
             subtask.save()
 
     subtask_form = SubTaskForm(task = task)
     task.days_left = get_days_left(task.deadline)
-    task.progress_percentage = get_progress_percentage_subtasks(task)
-    task.progress_background = get_progress_background(task.progress_percentage)
+    task.progress_percentage = task.get_progress_percentage
+    task.progress_background = task.progress_color
+
     context = {}
     context['task'] = task
     context['students'] = task.students.all()
     context['subtasks'] = subtask_form
+    
     return render(request, template_name, context)
 
 
@@ -109,26 +111,6 @@ def task_undone(request, pk):
     task.save()
     return redirect(f"/tasks/{pk}")
 
-
-# Auxiliar methods:
-def get_days_left(deadline):
-    """ Used to calculate how many days are left until a task deadline """
-    now = datetime.now().date()
-    days_left = (deadline - now).days
-    return days_left
-
-
-def get_progress_percentage(task):
-    """ Return the percentage of time left for a certain task based on its deadline date """
-    created_at_date = task.created_at.date()
-    total_days = (task.deadline - created_at_date).days
-    if task.is_done:
-        return 100
-    progress_percentage = (
-        100 - (100 * task.days_left / total_days) if task.days_left > 0 else 100
-    )
-    return int(progress_percentage)
-
 def get_progress_percentage_subtasks(task):
     """ Returns the percentage based on the subtasks completed, and also based on the deadline """
     subtasks = SubTask.objects.all().filter(task = task)
@@ -137,8 +119,10 @@ def get_progress_percentage_subtasks(task):
         if subtask.is_done:
             completed_subtasks+=1
     
-    if task.deadline - datetime.now().date() <= 0:
+    if (task.deadline - datetime.now().date()).days <= 0 or task.is_done:
         progress_percentage = 100
+    elif total_subtasks == 0:
+        progress_percentage = 0
     else:
         progress_percentage = int((completed_subtasks/total_subtasks)*100)
     return progress_percentage
@@ -152,25 +136,6 @@ def filter_tasks(tasks):
     past_tasks = list(filter(lambda t: (t.days_left < 0 or t.is_done), tasks))
 
     return current_tasks, past_tasks
-
-
-def get_progress_background(progress):
-    """
-    Gets the appropriate background color for a given amount of progress made in a project
-    :param progress: the amount of progress between the start date and the ending date (0-100)
-    :return: a string representing the corresponding color for a background with the given amount of progress towards
-    the end date
-    """
-    if progress == 100:
-        background_color = "bg-info"
-    elif progress >= 90:
-        background_color = "bg-danger"
-    elif progress >= 70:
-        background_color = "bg-warning"
-    else:
-        background_color = "bg-success"
-
-    return background_color
 
 def toggle(task, data):
     ''' Toggles completion of subtasks based on form data '''

@@ -45,4 +45,4 @@ class SubTaskForm(forms.Form):
             self.fields[subtask.name] = forms.BooleanField(required = False, initial = subtask.is_done)
         
         # the 'add' field is for creating a SubTask object
-        self.fields['add'] = forms.CharField(required=False,max_length=100,label='Add SubTask')
+        self.fields['add_subtask'] = forms.CharField(required=False,max_length=100,label='Add SubTask')
