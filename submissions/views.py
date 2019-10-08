@@ -70,8 +70,17 @@ def submission_update(request, pk, template_name="submissions/submission_form.ht
     return render(request, template_name, {"form": form})
 
 @login_required
-def submission_delete(request, template_name="submissions/submission_confirm_delete.html"):
-    pass
+def submission_delete(request, pk, template_name="submissions/submission_confirm_delete.html"):
+    if request.user.is_superuser:
+        submission = get_object_or_404(Submission, pk=pk)
+    else:
+        submission = get_object_or_404(Submission, pk=pk, students=request.user)
+    
+    if request.method == "POST":
+        submission.delete()
+        return redirect("submissions:submission_list")
+
+    return render(request, template_name, {"submission": submission})
 
 
 def get_status_background(status):
