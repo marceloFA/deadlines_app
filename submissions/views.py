@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Q
+from django.contrib import messages
 
 # Custom imports
 from tasks.models import Task
@@ -46,27 +46,23 @@ def submission_list(request, template_name="submissions/submission_list.html"):
     return render(request, template_name, context)
 
 
-def get_statistics():
-    n_submitted = Submission.objects.filter(status__in=[3,4,5]).count()
-    n_approved = Submission.objects.filter(status=4).count()
-    approval_rate = 0
-    if n_submitted > 0:
-        approval_rate =  n_approved // n_submitted *100
-    return n_submitted, approval_rate
-
-
-
 @login_required
 def submission_create(request, template_name="submissions/submission_form.html"):
     form = SubmissionForm(request.POST or None)
+    
+    if request.POST:
+        if form.is_valid():
+            submission = form.save(commit=False)
+            submission.user = request.user
+            submission.save()
+            form.save_m2m()
+            new_submission_message = "Created submission successfully"
+            messages.success(request, new_submission_message)
 
-    if form.is_valid():
-        submission = form.save(commit=False)
-        submission.user = request.user
-        submission.save()
-        form.save_m2m()
-
-        return redirect("submissions:submission_list")
+            return redirect("submissions:submission_list")
+        else:
+                for msg in form._errors:
+                    messages.error(request, f"{form._errors[msg]}")
 
     return render(request, template_name, {"form": form})
 
@@ -80,24 +76,42 @@ def submission_update(request, pk, template_name="submissions/submission_form.ht
 
     form = SubmissionForm(request.POST or None, instance=submission)
 
-    if form.is_valid():
-        form.save()
-        return redirect(f"/submissions/{pk}")
+    if request.POST:
+        if form.is_valid():
+            form.save()
+            return redirect(f"/submissions/{pk}")
+        else:
+            for msg in form._errors:
+                messages.error(request, f"{form._errors[msg]}")
 
     return render(request, template_name, {"form": form})
+
 
 @login_required
 def submission_delete(request, pk, template_name="submissions/submission_confirm_delete.html"):
     if request.user.is_superuser:
         submission = get_object_or_404(Submission, pk=pk)
     else:
-        submission = get_object_or_404(Submission, pk=pk, students=request.user)
+        submission = get_object_or_404(Submission, pk=pk)
     
     if request.method == "POST":
         submission.delete()
+        delete_message = "Successfully deleted that submission ;)"
+        messages.success(request, delete_message)
+
         return redirect("submissions:submission_list")
 
     return render(request, template_name, {"submission": submission})
+
+
+
+def get_statistics():
+    n_submitted = Submission.objects.filter(status__in=[3,4,5]).count()
+    n_approved = Submission.objects.filter(status=4).count()
+    approval_rate = 0
+    if n_submitted > 0:
+        approval_rate =  n_approved // n_submitted *100
+    return n_submitted, approval_rate
 
 
 def get_status_background(status):

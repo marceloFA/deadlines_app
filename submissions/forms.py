@@ -29,4 +29,4 @@ class SubmissionForm(forms.ModelForm):
     )
 
     # Paper url
-    paper_url = forms.CharField(widget=forms.TextInput(attrs={'class': 'special'}))
+    paper_url = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'special'}))
