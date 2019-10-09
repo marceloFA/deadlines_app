@@ -19,11 +19,11 @@
           {{ task.event }}
         </a>
         {% if task.is_done %}
-        <span class="badge badge-{{ task.progress_colored }} mx-2">done</span>
+        <span class="badge badge-{{ task.progress_background }} mx-2">done</span>
         {% elif not task.is_done and task.days_left < 0 %}
-        <span class="badge badge-{{ task.progress_colored }} mx-2">past event</span>
+        <span class="badge badge-{{ task.progress_background }} mx-2">past event</span>
         {% else %}
-        <span class="badge badge-{{ task.progress_colored }} mx-2">{{ task.days_left }} days left</span>
+        <span class="badge badge-{{ task.progress_background }} mx-2">{{ task.days_left }} days left</span>
         <span class="badge badge-inverse">deadine in {{ task.deadline }}</span>
         {% endif %}
         

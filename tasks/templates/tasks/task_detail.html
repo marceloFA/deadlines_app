@@ -6,7 +6,7 @@
 <div class="jumbotron">
   <h1 class="display-4">{{ task.event }}</h1>
   <div class="progress" style="background-color: lightgray">
-    <div class="progress-bar progress-bar-striped progress-bar-animated bg-{{task.progress_background}}" role="progressbar"
+    <div class="progress-bar progress-bar-striped progress-bar-animated {{task.progress_background}}" role="progressbar"
       style="width: {{task.progress_percentage}}%; color: black;" aria-valuenow="{{task.progress_percentage}}"
       aria-valuemin="0" aria-valuemax="100">{{task.progress_percentage}}%</div>
   </div>
@@ -16,24 +16,43 @@
   <h4 class="display-8">{{ task.deadline }}</h4>
   <hr class="my-4">
   <h4 class="display-8">Students:</h4>
-
+  <br>
   <!-- Students of this task -->
-  <ul class="list-group list-group-flush my-4">
-    {% for student in students %}
-      <li class="list-group-item ">
-        <h6> {{ student.name }} </h6>
-      </li>
-    {% empty %}
-      <li  class="list-group-item">
-        No current students on this task
-      </li>
-    {% endfor %}
-  </ul>
-  <a class="btn btn-info btn-md" href="{% url 'tasks:task_update' task.id %}" role="button">Edit</a>
-  <a class="btn btn-danger btn-md" href="{% url 'tasks:task_delete' task.id %}" role="button">Delete</a>
-  {% if task.is_done %} 
-    <a class="btn btn-warning btn-md" href="{% url 'tasks:task_undone' task.id %}" role="button">Mark as undone</a>
+  {% for student in students %}
+    <div class="col-sm">
+      <ul class="list-group list-group-flush" style="background-color: transparent">
+        <li class="list-group-item " style="background-color: transparent">
+          <h6> {{ student.name }} </h6>
+        </li>
+      </ul>
+    </div>
+  {% empty %}
+    <h6>No students assigned to this task</h6>
+  {% endfor %}
+
+  <hr>
+
+  <h4 class="display-8">Subtasks:</h4>
+
+  <br>
+
+  {% if subtasks %}
+    <form method="post">
+      {% csrf_token %}
+      {{ subtasks.as_p }}
+      <input type="submit" value="Save Checklist" class="btn btn-success"/>
+    </form>
   {% else %}
+    <h6>No subtasks created for this task</h6>
+  {% endif %}
+
+  <br>
+
+  <a class="btn btn-warning btn-md" href="{% url 'tasks:task_update' task.id %}" role="button">Edit this task</a>
+  <a class="btn btn-danger btn-md" href="{% url 'tasks:task_delete' task.id %}" role="button">Delete this task</a>
+  {% if task.is_done %} 
+  <a class="btn btn-info btn-md" href="{% url 'tasks:task_undone' task.id %}" role="button">Mark as undone</a>
+  {% else %}  
   <a class="btn btn-success btn-md" href="{% url 'tasks:task_done' task.id %}" role="button">Mark as done</a>
   {% endif %}
 </div>

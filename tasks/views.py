@@ -1,11 +1,12 @@
+from django import forms
 from django.http import Http404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
 # custom imports
-from tasks.models import Task
+from tasks.models import Task, SubTask
 from users.models import Student
-from tasks.forms import TaskForm
+from tasks.forms import TaskForm, SubTaskForm
 from datetime import datetime
 
 
@@ -16,9 +17,21 @@ def task_detail(request, pk, template_name="tasks/task_detail.html"):
     except Task.DoesNotExist:
         raise Http404("This Task does not exist :0")
 
-    task = get_context(task)
+    if request.method == 'POST': 
+        toggle(task,request.POST)
+        if request.POST.get('add_subtask'): 
+            ''' A Subtask object is created and saved '''
+            subtask = SubTask(name = request.POST.get('add_subtask') , task = task) 
+            subtask.save()
 
-    context = {"task": task, "students": task.students.all()}
+    subtask_form = SubTaskForm(task = task)
+    task.days_left = get_days_left(task.deadline)
+
+    context = {}
+    context['task'] = task
+    context['students'] = task.students.all()
+    context['subtasks'] = subtask_form
+    
     return render(request, template_name, context)
 
 
@@ -95,8 +108,17 @@ def task_undone(request, pk):
     task.save()
     return redirect(f"/tasks/{pk}")
 
+def toggle(task, data):
+    ''' Toggles completion of subtasks based on form data '''
+    subtasks = SubTask.objects.all().filter(task = task)
+    for subtask in subtasks:
+        if data.get(subtask.name):
+            subtask.is_done = True
+        else:
+            subtask.is_done = False
+        subtask.save()
 
-# Auxiliar methods:
+# Auxiliary methods:
 
 
 def filter_tasks(tasks):
@@ -114,8 +136,6 @@ def get_context(task):
     Some context is required for each Task
     '''
     task.days_left = get_days_left(task.deadline)
-    task.progress_percentage = get_progress_percentage(task)
-    task.progress_background = get_progress_background(task.progress_percentage)
     return task
 
 def get_days_left(deadline):
@@ -123,34 +143,3 @@ def get_days_left(deadline):
     now = datetime.now().date()
     days_left = (deadline - now).days
     return days_left
-
-
-def get_progress_percentage(task):
-    """ Return the percentage of time left for a certain task based on its deadline date """
-    created_at_date = task.created_at.date()
-    total_days = (task.deadline - created_at_date).days
-    if task.is_done:
-        return 100
-    progress_percentage = (
-        100 - (100 * task.days_left / total_days) if task.days_left > 0 else 100
-    )
-    return int(progress_percentage)
-
-
-def get_progress_background(progress):
-    """
-    Gets the appropriate background color for a given amount of progress made in a project
-    :param progress: the amount of progress between the start date and the ending date (0-100)
-    :return: a string representing the corresponding color for a background with the given amount of progress towards
-    the end date
-    """
-    if progress == 100:
-        background_color = "info"
-    elif progress >= 90:
-        background_color = "danger"
-    elif progress >= 70:
-        background_color = "warning"
-    else:
-        background_color = "success"
-
-    return background_color

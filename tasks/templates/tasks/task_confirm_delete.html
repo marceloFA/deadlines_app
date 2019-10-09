@@ -3,13 +3,12 @@
 {% block content %}
 
 <h2><a href="{% url 'tasks:task_list' %}">Task</a>: Delete?</h2>
+<p>Are you sure you want to delete "{{ object }}" ?</p>
 
-<form method="post">
-    {% csrf_token %}
-    Are you sure you want to delete "{{ object }}" ?<br/>
-    <div class="form-group">
-        <button type="submit" class="btn btn-danger">Delete</button>
-    </div>
+<form method="post">{% csrf_token %}
+    
+    <input type="submit" value="Delete" class="btn btn-danger"/>
+    <a class="btn btn-success" href="{% url 'tasks:task_list' %}">Cancel</a>
 </form>
 
 {% endblock %}
