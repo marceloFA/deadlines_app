@@ -49,7 +49,9 @@ def submission_list(request, template_name="submissions/submission_list.html"):
 def get_statistics():
     n_submitted = Submission.objects.filter(status__in=[3,4,5]).count()
     n_approved = Submission.objects.filter(status=4).count()
-    approval_rate =  n_approved // n_submitted *100
+    approval_rate = 0
+    if n_submitted > 0:
+        approval_rate =  n_approved // n_submitted *100
     return n_submitted, approval_rate
 
 
