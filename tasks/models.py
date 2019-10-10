@@ -12,13 +12,13 @@ class Task(ModelWithTimeStamp):
     QUALIS_CHOICES = (
         ("A1", "A1"),
         ("A2", "A2"),
+        ("A3", "A3"),
+        ("A4", "A4"),
         ("B1", "B1"),
         ("B2", "B2"),
-        ("C1", "C1"),
-        ("C2", "C2"),
-        ("C3", "C3"),
-        ("C4", "C4"),
-        ("C5", "C5"),
+        ("B3", "B3"),
+        ("B4", "B4"),
+        ("C", "C"),
         ("", "Does not apply"),
     )
 
