@@ -5,8 +5,8 @@ from django.conf import settings
 from users.models import Student
 from multiselectfield import MultiSelectField
 
-class Task(ModelWithTimeStamp):
-    """ The Task model saves informations about a task, including its deadline """
+class Event(ModelWithTimeStamp):
+    """ The Event model saves informations about a event, including its deadline """
 
     # every value is a tuple (actual_value, human_redable_value)
     QUALIS_CHOICES = (
@@ -28,23 +28,23 @@ class Task(ModelWithTimeStamp):
         ("3", "Done"),
     )
 
-    event = models.CharField(max_length=200)
-    event_url = models.CharField(max_length=500, null=True, blank=True)
+    name = models.CharField(max_length=200)
+    url = models.CharField(max_length=500, null=True, blank=True)
     qualis = models.CharField(max_length=10, choices=QUALIS_CHOICES)
     deadline = models.DateField()
     students = models.ManyToManyField(Student, blank=True)
     is_done = models.BooleanField(default=False)
 
     def __str__(self):
-        """Console representation of a Task"""
-        return self.event
+        """Console representation of a Event"""
+        return self.name
 
     def get_absolute_url(self):
-        return reverse("task:task_edit", kwargs={"pk": self.pk})
+        return reverse("event:event_edit", kwargs={"pk": self.pk})
 
     @property
     def get_progress_percentage(self):
-        """ Return the percentage of time left for a certain task based on its deadline date """
+        """ Return the percentage of time left for a certain event based on its deadline date """
         created_at_date = self.created_at.date()
         total_days = (self.deadline - created_at_date).days
         progress_percentage = (

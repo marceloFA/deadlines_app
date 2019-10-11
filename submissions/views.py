@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
 # Custom imports
-from tasks.models import Task
 from submissions.models import Submission
 from submissions.forms import SubmissionForm
 from users.models import Student
@@ -54,6 +53,7 @@ def submission_create(request, template_name="submissions/submission_form.html")
         if form.is_valid():
             submission = form.save(commit=False)
             submission.user = request.user
+            print(submission.event)
             submission.save()
             form.save_m2m()
             new_submission_message = "Created submission successfully"

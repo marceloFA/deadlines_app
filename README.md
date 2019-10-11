@@ -3,8 +3,8 @@
 This is a small Django project to register and manage academic Deadlines
 
 Here are the current django apps that compose this project
-- tasks (related to academic tasks mangement)
-- submissions ( manages submissions of tasks to academic events)
+- events (related to academic events mangement)
+- submissions ( manages submissions of papers to academic events)
 - users (related to the Student that can signup to use this app)
 
 

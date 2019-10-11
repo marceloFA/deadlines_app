@@ -43,7 +43,7 @@ class StudentTestCase(TestCase):
         # Checking for routes that return webpages
         routes = [
             "/",
-            "/tasks/",
+            "/events/",
             "/register/",
             "/login/",
             "/password_reset/",

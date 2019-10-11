@@ -9,8 +9,8 @@ from django.contrib.auth.decorators import login_required
 from users.forms import StudentCreationForm, StudentChangeForm, AccountDeactivationForm, \
     ReactivationForm
 from .models import Student
-from tasks.models import Task
-from tasks.views import get_context
+from events.models import Event
+from events.views import get_context
 from submissions.models import Submission
 
 
@@ -26,7 +26,7 @@ def register(request):
             login(request, student)
             logged_in_message = f"Now you're logged in as {student.name}"
             messages.info(request, logged_in_message)
-            return redirect("tasks:task_list")
+            return redirect("events:event_list")
         else:
             for msg in form._errors:
                 messages.error(request, f"{form._errors[msg]}")
@@ -50,7 +50,7 @@ def login_request(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"Now you're logged in as {username}")
-                return redirect("tasks:task_list")
+                return redirect("events:event_list")
             else:
                 messages.error(request, login_error_message)
         else:
@@ -77,7 +77,7 @@ def logout_request(request):
     logout(request)
     logged_out_message = "You logged out successfully"
     messages.success(request, logged_out_message)
-    return redirect("tasks:task_list")
+    return redirect("events:event_list")
 
 
 @login_required
@@ -92,7 +92,7 @@ def deactivate(request):
             request.user.save()
             # NOTE: user will automatically log out
             messages.success(request, "Your account has been deactivated")
-            return redirect("tasks:task_list")
+            return redirect("events:event_list")
         else:
             messages.error(request, "Invalid password")
 
@@ -118,7 +118,7 @@ def reactivate(request):
                 request,
                 f"Reactivation is successful and now you're logged in as {username}",
             )
-            return redirect("tasks:task_list")
+            return redirect("events:event_list")
         else:
             messages.error(request, login_error_message)
 
@@ -130,12 +130,12 @@ def reactivate(request):
 
 @login_required
 def show_profile(request):
-    # Load related Tasks and submissions
-    tasks = Task.objects.filter(students=request.user.id)
+    # Load related Events and submissions
+    events = Event.objects.filter(students=request.user.id)
     # get context
-    tasks = [get_context(t) for t in tasks]
+    events = [get_context(t) for t in events]
     
-    context = {"tasks": tasks,
+    context = {"events": events,
                 "submissions": Submission.objects.filter(students=request.user.id)}
     return render(request, "profile.html", context)
 
@@ -161,7 +161,7 @@ def student_update(request, pk):
                 student.name = form.cleaned_data["name"]
             student.save()
 
-            return redirect("tasks:task_list")
+            return redirect("events:event_list")
         else:
             for msg in form.error_messages:
                 messages.error(request, f"{form.error_messages[msg]}")

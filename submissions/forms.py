@@ -1,6 +1,6 @@
 from django import forms
 from submissions.models import Submission
-from tasks.models import Task
+from events.models import Event
 from users.models import Student
 
 
@@ -8,12 +8,11 @@ class SubmissionForm(forms.ModelForm):
     class Meta:
         model = Submission
         fields = "__all__"
-        exclude = ('event',)
 
-    # The task that got submitted
-    task = forms.ModelChoiceField(
-        label='What task is associated with this submission (Neither is an option)',
-        queryset=Task.objects.all()
+    # The event that got a submission
+    event = forms.ModelChoiceField(
+        label='What event is associated with this submission (Neither is an option)',
+        queryset=Event.objects.all()
         )
 
     # Students associated with this submission

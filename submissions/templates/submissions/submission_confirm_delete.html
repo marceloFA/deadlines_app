@@ -6,7 +6,7 @@
 
 <form method="post">
     {% csrf_token %}
-    Are you sure you want to delete the submission for "{{ submission.task.event }}" ?<br/>
+    Are you sure you want to delete the submission for "{{ submission.event.name }}" ?<br/>
     <div class="form-group">
         <button type="submit" class="btn btn-danger">Delete</button>
     </div>

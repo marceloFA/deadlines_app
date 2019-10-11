@@ -11,9 +11,9 @@ urlpatterns = [
     
     # main url's
     path("admin/", admin.site.urls),
-    path("tasks/", include("tasks.urls", namespace="tasks")),
+    path("events/", include("events.urls", namespace="events")),
     path("submissions/", include("submissions.urls", namespace="submissions")),
-    path("", include("tasks.urls", namespace="home")),
+    path("", include("events.urls", namespace="home")),
 
     # Registration and SignIn related
     path("register/", user_views.register, name="register"),

@@ -38,12 +38,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "bootstrap4",
-    # 'jquery'
     "bootstrap_datepicker_plus",
     "users.apps.UsersConfig",
-    "tasks",
+    "events",
     "mathfilters",
     "submissions",
+    "django_extensions",
 ]
 
 BOOTSTRAP4 = {"include_jquery": True}

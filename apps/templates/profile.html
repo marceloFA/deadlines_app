@@ -11,26 +11,26 @@
 <div class="hero-unit">
   <h2 class="my-2">Profile page</h2>
   <hr>
-  <h4 class="my-2">Your current tasks:</h4>
+  <h4 class="my-2">Events you are involved in:</h4>
   <ul class="list-group list-group-flush">
-    {% for task in tasks %}    
+    {% for event in events %}    
       <li  class="list-group-item">
-        <a href="{% url 'tasks:task_detail' task.id %}">
-          {{ task.event }}
+        <a href="{% url 'events:event_detail' event.id %}">
+          {{ event.name }}
         </a>
-        {% if task.is_done %}
-        <span class="badge badge-{{ task.progress_colored }} mx-2">done</span>
-        {% elif not task.is_done and task.days_left < 0 %}
-        <span class="badge badge-{{ task.progress_colored }} mx-2">past event</span>
+        {% if event.is_done %}
+        <span class="badge badge-{{ event.progress_colored }} mx-2">done</span>
+        {% elif not event.is_done and event.days_left < 0 %}
+        <span class="badge badge-{{ event.progress_colored }} mx-2">past event</span>
         {% else %}
-        <span class="badge badge-{{ task.progress_colored }} mx-2">{{ task.days_left }} days left</span>
-        <span class="badge badge-inverse">deadine in {{ task.deadline }}</span>
+        <span class="badge badge-{{ event.progress_colored }} mx-2">{{ event.days_left }} days left</span>
+        <span class="badge badge-inverse">deadine in {{ event.deadline }}</span>
         {% endif %}
         
       </li>
     {% empty %}
       <li  class="list-group-item">
-        No current tasks.
+        No current events.
       </li>
     {% endfor %}
   </ul>
@@ -40,7 +40,7 @@
     {% for submission in submissions %}    
       <li  class="list-group-item">
         <a href="{% url 'submissions:submission_detail' submission.id %}">
-          {{ submission.task}}
+          {{ submission.event.name}}
         </a>
         <span class="badge badge-info mx-1">{{ submission.get_status_display }}</span>
       </li>
