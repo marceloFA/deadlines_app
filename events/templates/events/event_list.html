@@ -57,11 +57,17 @@
     </tbody>
 </table>
 
-
-<script src="{% static "js/data_tables.js"%}"></script>
-
-
 <img src="{% static "images/deadlines-timeline.png" %}" alt="Deadlines Timeline" class="img-fluid my-5 w-75 mx-auto d-block""/>
 
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable({
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bFilter": true,
+            "bInfo": false,
+            "bAutoWidth": false });
+        });
+</script>
 
 {% endblock %}
