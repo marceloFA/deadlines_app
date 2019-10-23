@@ -114,7 +114,7 @@ def get_context(event):
     Some context is required for each Event
     '''
     event.days_left = get_days_left(event.deadline)
-    event.progress_percentage = get_progress_percentage(event)
+    #event.progress_percentage = get_progress_percentage(event) # not necessary anymore as its a builtin model field now
     event.progress_background = get_progress_background(event.progress_percentage)
     return event
 
@@ -124,17 +124,17 @@ def get_days_left(deadline):
     days_left = (deadline - now).days
     return days_left
 
-
-def get_progress_percentage(event):
-    """ Return the percentage of time left for a certain event based on its deadline date """
-    created_at_date = event.created_at.date()
-    total_days = (event.deadline - created_at_date).days
-    if event.is_done:
-        return 100
-    progress_percentage = (
-        100 - (100 * event.days_left / total_days) if event.days_left > 0 else 100
-    )
-    return int(progress_percentage)
+# Old method of getting progress percentage, not used anymore
+#def get_progress_percentage(event):
+#    """ Return the percentage of time left for a certain event based on its deadline date """
+#    created_at_date = event.created_at.date()
+#    total_days = (event.deadline - created_at_date).days
+#    if event.is_done:
+#        return 100
+#    progress_percentage = (
+#        100 - (100 * event.days_left / total_days) if event.days_left > 0 else 100
+#    )
+#    return int(progress_percentage)
 
 
 def get_progress_background(progress):
