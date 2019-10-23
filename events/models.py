@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.conf import settings
 from users.models import Student
 
+
 class Event(ModelWithTimeStamp):
     """ The Event model saves informations about a event, including its deadline """
 
@@ -21,11 +22,7 @@ class Event(ModelWithTimeStamp):
         ("", "Does not apply"),
     )
 
-    STATUS_CHOICES = (
-        ("1", "Enable"),
-        ("2", "Canceled"),
-        ("3", "Done"),
-    )
+    STATUS_CHOICES = (("1", "Enable"), ("2", "Canceled"), ("3", "Done"))
 
     name = models.CharField(max_length=200)
     url = models.CharField(max_length=500, null=True, blank=True)

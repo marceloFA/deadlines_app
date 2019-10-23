@@ -8,26 +8,21 @@ from users import views as user_views
 app_name = "apps"
 
 urlpatterns = [
-    
     # main url's
     path("admin/", admin.site.urls),
     path("events/", include("events.urls", namespace="events")),
     path("submissions/", include("submissions.urls", namespace="submissions")),
     path("", include("events.urls", namespace="home")),
-
     # Registration and SignIn related
     path("register/", user_views.register, name="register"),
     path("login/", user_views.login_request, name="login"),
     path("logout/", user_views.logout_request, name="logout"),
-
     # Profile related
     path("profile/", user_views.show_profile, name="profile"),
     path("profile/edit/<int:pk>", user_views.student_update, name="edit_profile"),
-
     # Deactivation related
     path("deactivate/", user_views.deactivate, name="deactivate"),
     path("reactivate/", user_views.reactivate, name="reactivate"),
-    
     # Password reset related
     path(
         "password_reset/", auth_views.PasswordResetView.as_view(), name="password_reset"

@@ -9,7 +9,6 @@ from submissions.forms import SubmissionForm
 from users.models import Student
 
 
-
 def submission_detail(request, pk, template_name="submissions/submission_detail.html"):
 
     try:
@@ -19,17 +18,13 @@ def submission_detail(request, pk, template_name="submissions/submission_detail.
 
     submission.status_background = get_status_background(submission.status)
 
-    context = {
-        'submission': submission,
-        "students": submission.students.all(),
-    }
+    context = {"submission": submission, "students": submission.students.all()}
 
     return render(request, template_name, context)
 
 
-
 def submission_list(request, template_name="submissions/submission_list.html"):
-    
+
     submissions = Submission.objects.all()
     n_submitted, approval_rate = get_statistics()
 
@@ -37,9 +32,9 @@ def submission_list(request, template_name="submissions/submission_list.html"):
         sub.status_background = get_status_background(sub.status)
 
     context = {
-        'submissions':submissions,
-        'total_submissions':n_submitted,
-        'approval_rate': approval_rate,
+        "submissions": submissions,
+        "total_submissions": n_submitted,
+        "approval_rate": approval_rate,
     }
 
     return render(request, template_name, context)
@@ -48,7 +43,7 @@ def submission_list(request, template_name="submissions/submission_list.html"):
 @login_required
 def submission_create(request, template_name="submissions/submission_form.html"):
     form = SubmissionForm(request.POST or None)
-    
+
     if request.POST:
         if form.is_valid():
             submission = form.save(commit=False)
@@ -61,8 +56,8 @@ def submission_create(request, template_name="submissions/submission_form.html")
 
             return redirect("submissions:submission_list")
         else:
-                for msg in form._errors:
-                    messages.error(request, f"{form._errors[msg]}")
+            for msg in form._errors:
+                messages.error(request, f"{form._errors[msg]}")
 
     return render(request, template_name, {"form": form})
 
@@ -88,12 +83,14 @@ def submission_update(request, pk, template_name="submissions/submission_form.ht
 
 
 @login_required
-def submission_delete(request, pk, template_name="submissions/submission_confirm_delete.html"):
+def submission_delete(
+    request, pk, template_name="submissions/submission_confirm_delete.html"
+):
     if request.user.is_superuser:
         submission = get_object_or_404(Submission, pk=pk)
     else:
         submission = get_object_or_404(Submission, pk=pk)
-    
+
     if request.method == "POST":
         submission.delete()
         delete_message = "Successfully deleted that submission ;)"
@@ -104,13 +101,12 @@ def submission_delete(request, pk, template_name="submissions/submission_confirm
     return render(request, template_name, {"submission": submission})
 
 
-
 def get_statistics():
-    n_submitted = Submission.objects.filter(status__in=[3,4,5]).count()
+    n_submitted = Submission.objects.filter(status__in=[3, 4, 5]).count()
     n_approved = Submission.objects.filter(status=4).count()
     approval_rate = 0
     if n_submitted > 0:
-        approval_rate =  n_approved // n_submitted *100
+        approval_rate = n_approved // n_submitted * 100
     return n_submitted, approval_rate
 
 
@@ -128,7 +124,7 @@ def get_status_background(status):
         color = "warning"
     elif status == 4:
         color = "success"
-    elif status ==5:
+    elif status == 5:
         color = "danger"
     else:
         color = "light"

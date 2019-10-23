@@ -11,21 +11,24 @@ class SubmissionForm(forms.ModelForm):
 
     # The event that got a submission
     event = forms.ModelChoiceField(
-        label='What event is associated with this submission (Neither is an option)',
-        queryset=Event.objects.all()
-        )
+        label="What event is associated with this submission (Neither is an option)",
+        queryset=Event.objects.all(),
+    )
 
     # Students associated with this submission
     students = forms.ModelMultipleChoiceField(
-        label='Select the students associated with this submission',
+        label="Select the students associated with this submission",
         queryset=Student.objects.filter(is_active=True),
         widget=forms.CheckboxSelectMultiple,
     )
 
-    # Submission status 
+    # Submission status
     status = forms.CharField(
-        label="Submission status", widget=forms.Select(choices=Submission.STATUS_CHOICES)
+        label="Submission status",
+        widget=forms.Select(choices=Submission.STATUS_CHOICES),
     )
 
     # Paper url
-    paper_url = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'special'}))
+    paper_url = forms.CharField(
+        required=False, widget=forms.TextInput(attrs={"class": "special"})
+    )
