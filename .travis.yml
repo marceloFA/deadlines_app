@@ -1,0 +1,23 @@
+language: python
+python:
+  - 3.6
+  - 3.7
+  - 3.8
+
+install:
+  - pip install -r requirements.txt
+  - pip install codecov
+
+script:
+  - coverage run --include='./*' manage.py test
+  - coverage report -m
+
+after_success:
+  - codecov
+
+jobs:
+  include:
+    - stage: lint
+      python: 3.8
+      script:
+        - black .
