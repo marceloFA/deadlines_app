@@ -21,19 +21,11 @@ class Event(ModelWithTimeStamp):
         ("", "Does not apply"),
     )
 
-    STATUS_CHOICES = (
-        ("1", "Enable"),
-        ("2", "Canceled"),
-        ("3", "Done"),
-    )
-
     name = models.CharField(max_length=200)
     url = models.CharField(max_length=500, null=True, blank=True)
     qualis = models.CharField(max_length=10, choices=QUALIS_CHOICES)
     deadline = models.DateField()
-    progress_percentage = models.IntegerField()
-    students = models.ManyToManyField(Student, blank=True)
-    is_done = models.BooleanField(default=False)
+    
 
     def __str__(self):
         """Console representation of a Event"""
@@ -41,18 +33,3 @@ class Event(ModelWithTimeStamp):
 
     def get_absolute_url(self):
         return reverse("event:event_edit", kwargs={"pk": self.pk})
-
-    @property
-    def progress_color(self):
-        """ Assigns a color for completion badge, from black at 0% to green at 100% """
-        percentage = self.progress_percentage
-        if percentage == 100:
-            badge_color = "bg-info"
-        elif percentage >= 90:
-            badge_color = "bg-danger"
-        elif percentage >= 70:
-            badge_color = "bg-warning"
-        else:
-            badge_color = "bg-success"
-
-        return badge_color

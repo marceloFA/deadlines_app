@@ -36,8 +36,10 @@ def submission_list(request, template_name="submissions/submission_list.html"):
     for sub in submissions:
         sub.status_background = get_status_background(sub.status)
 
+    active_subs, past_subs = filter_submissions(submissions)
     context = {
-        'submissions':submissions,
+        'active_submissions':active_subs,
+        'past_submissions':past_subs,
         'total_submissions':n_submitted,
         'approval_rate': approval_rate,
     }
@@ -46,23 +48,22 @@ def submission_list(request, template_name="submissions/submission_list.html"):
 
 
 @login_required
-def submission_create(request, template_name="submissions/submission_form.html"):
-    form = SubmissionForm(request.POST or None)
+def submission_create(request, event_pk, template_name="submissions/submission_form.html"):
+    
+    form = SubmissionForm(event_pk, request.POST or None)
     
     if request.POST:
         if form.is_valid():
             submission = form.save(commit=False)
             submission.user = request.user
-            print(submission.event)
             submission.save()
             form.save_m2m()
             new_submission_message = "Created submission successfully"
             messages.success(request, new_submission_message)
-
             return redirect("submissions:submission_list")
         else:
-                for msg in form._errors:
-                    messages.error(request, f"{form._errors[msg]}")
+            for msg in form._errors:
+                messages.error(request, f"{form._errors[msg]}")
 
     return render(request, template_name, {"form": form})
 
@@ -74,7 +75,8 @@ def submission_update(request, pk, template_name="submissions/submission_form.ht
     else:
         submission = get_object_or_404(Submission, pk=pk)
 
-    form = SubmissionForm(request.POST or None, instance=submission)
+    task_id = submission.task.id
+    form = SubmissionForm(task_id, request.POST or None, instance=submission)
 
     if request.POST:
         if form.is_valid():
@@ -104,8 +106,31 @@ def submission_delete(request, pk, template_name="submissions/submission_confirm
     return render(request, template_name, {"submission": submission})
 
 
+@login_required
+def submission_done(request, pk):
+    if request.user.is_superuser:
+        submission = get_object_or_404(Submission, pk=pk)
+    else:
+        event = get_object_or_404(Submission, pk=pk, students=request.user)
+    submission.submitted = True
+    submission.save()
+    return redirect(f"/submissions/{pk}")
+
+@login_required
+def submission_undone(request, pk):
+    if request.user.is_superuser:
+        submission = get_object_or_404(Submission, pk=pk)
+    else:
+        submission = get_object_or_404(Submission, pk=pk, students=request.user)
+    submission.submitted = False
+    submission.save()
+    return redirect(f"/submissions/{pk}")
+
+
 
 def get_statistics():
+    ''' This method get some statistics on the Submission instances '''
+    # Only submission with status__in the values below are accounted for statistics
     n_submitted = Submission.objects.filter(status__in=[3,4,5]).count()
     n_approved = Submission.objects.filter(status=4).count()
     approval_rate = 0
@@ -134,3 +159,13 @@ def get_status_background(status):
         color = "light"
 
     return color
+
+def filter_submissions(submissions):
+    """ 
+    This method filter Submission instances in two categories
+    current active submissions and past submissions, depending on the submitted field
+     """
+    active_submissions = list(filter(lambda s: (s.submitted), submissions))
+    past_submissions = list(filter(lambda s: (not s.submitted), submissions))
+
+    return active_submissions, past_submissions

@@ -17,25 +17,21 @@
   <hr class="my-4">
   <h4 class="display-8">Students:</h4>
 
-  <!-- Students of this event -->
+  <!-- Submissions of this event -->
   <ul class="list-group list-group-flush my-4">
-    {% for student in students %}
+    {% for submission in submissions %}
       <li class="list-group-item ">
-        <h6> {{ student.name }} </h6>
+        <h6> {{ submission.paper_title }} </h6>
       </li>
     {% empty %}
       <li  class="list-group-item">
-        No current students on this event
+        No current submissions on this event
       </li>
     {% endfor %}
   </ul>
   <a class="btn btn-info btn-md" href="{% url 'events:event_update' event.id %}" role="button">Edit</a>
   <a class="btn btn-danger btn-md" href="{% url 'events:event_delete' event.id %}" role="button">Delete</a>
-  {% if event.is_done %} 
-    <a class="btn btn-warning btn-md" href="{% url 'events:event_undone' event.id %}" role="button">Mark as undone</a>
-  {% else %}
-  <a class="btn btn-success btn-md" href="{% url 'events:event_done' event.id %}" role="button">Mark as done</a>
-  {% endif %}
+  <a class="btn btn-primary btn-md" href="{% url 'submissions:submission_new' event.id %}" role="button">Add new submisison for this event</a>
 </div>
 
 {% endblock %}
