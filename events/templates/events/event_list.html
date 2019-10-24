@@ -12,7 +12,6 @@
             <th scope="col">Event</th>
             <th scope="col">Days Left</th>
             <th scope="col">Deadline</th>
-            <th scope="col">Progress</th>
         </tr>
     </thead>
     <tbody>
@@ -21,13 +20,12 @@
             <th scope="row"><a href="{% url 'events:event_detail' event.id %}">{{ event.name }}</a></th>
             <td>{{ event.days_left }}</td>
             <td>{{ event.deadline }}</td>
-            <td> <span class="badge badge-{{event.progress_background}}">{{ event.get_progress_percentage }}%</span> </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<a href="{% url 'events:event_new' %}" class="btn btn-success">New Event</a>
+<a href="{% url 'events:event_new' %}" class="btn btn-success float-right">New Event</a>
 
 
 <hr class="my-5">
@@ -42,7 +40,6 @@
             <th scope="col">Event</th>
             <th scope="col">Days Passed</th>
             <th scope="col">Deadline</th>
-            <th scope="col">Progress</th>
         </tr>
     </thead>
     <tbody>
@@ -51,7 +48,7 @@
             <th scope="row"><a href="{% url 'events:event_detail' event.id %}">{{ event.name }}</a></th>
             <td>{{ event.days_left|abs }}</td> <!-- This is acctually a DAYS PASSED field -->
             <td>{{ event.deadline }}</td>
-            <td> <span class="badge badge-{{event.progress_background}}">{{ '100' }}%</span> </td>
+            <td></td>
         </tr>
         {% endfor %}
     </tbody>

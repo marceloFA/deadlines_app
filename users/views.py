@@ -131,12 +131,9 @@ def reactivate(request):
 @login_required
 def show_profile(request):
     # Load related Events and submissions
-    events = Event.objects.filter(students=request.user.id)
-    # get context
-    events = [get_context(t) for t in events]
+    submissions = request.user.submissions.all()
     
-    context = {"events": events,
-                "submissions": Submission.objects.filter(students=request.user.id)}
+    context = {"submissions": submissions}
     return render(request, "profile.html", context)
 
 

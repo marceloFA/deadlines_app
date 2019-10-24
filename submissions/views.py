@@ -18,6 +18,7 @@ def submission_detail(request, pk, template_name="submissions/submission_detail.
         raise Http404("This submission does not exist :0")
 
     submission.status_background = get_status_background(submission.status)
+    submission.progress_background = get_progress_background(submission.progress_percentage)
 
     context = {
         'submission': submission,
@@ -36,10 +37,8 @@ def submission_list(request, template_name="submissions/submission_list.html"):
     for sub in submissions:
         sub.status_background = get_status_background(sub.status)
 
-    active_subs, past_subs = filter_submissions(submissions)
     context = {
-        'active_submissions':active_subs,
-        'past_submissions':past_subs,
+        'submissions': submissions,
         'total_submissions':n_submitted,
         'approval_rate': approval_rate,
     }
@@ -75,8 +74,8 @@ def submission_update(request, pk, template_name="submissions/submission_form.ht
     else:
         submission = get_object_or_404(Submission, pk=pk)
 
-    task_id = submission.task.id
-    form = SubmissionForm(task_id, request.POST or None, instance=submission)
+    event_id = submission.event.id
+    form = SubmissionForm(event_id, request.POST or None, instance=submission)
 
     if request.POST:
         if form.is_valid():
@@ -131,8 +130,8 @@ def submission_undone(request, pk):
 def get_statistics():
     ''' This method get some statistics on the Submission instances '''
     # Only submission with status__in the values below are accounted for statistics
-    n_submitted = Submission.objects.filter(status__in=[3,4,5]).count()
-    n_approved = Submission.objects.filter(status=4).count()
+    n_submitted = Submission.objects.filter(status__in=[2,3,4]).count()
+    n_approved = Submission.objects.filter(status=3).count()
     approval_rate = 0
     if n_submitted > 0:
         approval_rate =  n_approved // n_submitted *100
@@ -149,23 +148,30 @@ def get_status_background(status):
     status = int(status)
     if status == 0 or status == 1:
         color = "light"
-    elif status == 2 or status == 3:
+    elif status == 2:
         color = "warning"
-    elif status == 4:
+    elif status == 3:
         color = "success"
-    elif status ==5:
+    elif status ==4:
         color = "danger"
     else:
         color = "light"
 
     return color
 
-def filter_submissions(submissions):
-    """ 
-    This method filter Submission instances in two categories
-    current active submissions and past submissions, depending on the submitted field
-     """
-    active_submissions = list(filter(lambda s: (s.submitted), submissions))
-    past_submissions = list(filter(lambda s: (not s.submitted), submissions))
+def get_progress_background(progress):
+    """
+    Gets the appropriate background color for a given amount of progress made in a submisison
+    :param progress: the amount of progress between the start date and the ending date (0-100)
+    :return: a string representing the corresponding color for a background with the given amount of progress
+    """
+    if progress == 100:
+        color = "success"
+    elif progress >= 65 and progress < 100:
+        color = "warning"
+    elif progress < 65:
+        color = "danger"
+    else:
+        color = "danger"
 
-    return active_submissions, past_submissions
+    return color

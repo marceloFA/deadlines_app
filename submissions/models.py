@@ -13,9 +13,9 @@ class Submission(ModelWithTimeStamp):
         ("4", "Rejected"),
     )
 
-    students = models.ManyToManyField(Student, blank=False)
+    students = models.ManyToManyField(Student, blank=False, related_name='submissions')
 
-    event = models.ForeignKey(Event, on_delete=models.SET_NULL,  null=True, related_name='event')
+    event = models.ForeignKey(Event, on_delete=models.SET_NULL,  null=True, related_name='submissions')
 
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='0')
 
@@ -24,22 +24,3 @@ class Submission(ModelWithTimeStamp):
     paper_url = models.CharField(max_length=300, blank=True, null=True)
 
     progress_percentage = models.IntegerField(default=0)
-
-    submitted = models.BooleanField(default=False)
-
-
-
-@property
-def progress_color(self):
-    """ Assigns a color for completion badge, from black at 0% to green at 100% """
-    percentage = self.progress_percentage
-    if percentage == 100:
-        badge_color = "bg-info"
-    elif percentage >= 90:
-        badge_color = "bg-danger"
-    elif percentage >= 70:
-        badge_color = "bg-warning"
-    else:
-        badge_color = "bg-success"
-
-    return badge_color

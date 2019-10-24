@@ -12,8 +12,7 @@ class SubmissionForm(forms.ModelForm):
     def __init__(self, event_id, *args, **kwargs):
         super(SubmissionForm, self).__init__(*args, **kwargs)
         self.fields['event'].queryset = Event.objects.filter(id=event_id)
-        self.fields['event'].label = 'What event is associated with this submission (Neither is an option)'
-        
+
     # Students associated with this submission
     students = forms.ModelMultipleChoiceField(
         label='Select the students associated with this submission',
@@ -21,9 +20,10 @@ class SubmissionForm(forms.ModelForm):
         widget=forms.CheckboxSelectMultiple,
     )
 
+
     # The event that got a submission
     event = forms.ModelChoiceField(
-        label='What event is associated with this submission (Neither is an option)',
+        label='What event is associated with this submission?',
         queryset=None # defined by the __init__ method
         )
 

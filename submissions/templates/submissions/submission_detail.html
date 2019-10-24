@@ -4,24 +4,37 @@
 <!-- Submission Details -->
 
 <div class="jumbotron">
-  <h1 class="display-4">A submission for <strong>{{ submission.event.name|truncatechars:20 }}</strong></h1>
+  <!--paper title-->
+  <h2 class="display-4"> {{ submission.paper_title }}</h2>
   <br>
-  <h4 class="display-8 text-{{ submission.status_background }}">{{ submission.get_status_display }}</h4>
-  <a href="{{ submission.paper_url }}" target="_blank" style=" vertical-align:text-bottom;">Paper url  
-    <img src="{% static 'icons/overleaf.png' %}" alt="overleaf icon" class="img-fluid" style=" height: 24px; margin-right: -16px; margin-bottom: -6px;"/>
+  <!--event name and submission status-->
+  <h4 class="display-8">A submission for <strong>{{ submission.event.name|truncatechars:20 }}</strong> | <span class="badge badge-{{submission.status_background}}">{{ submission.get_status_display }}</span></h4>
+  <br>
+  <!--overlaf anchor and image-->
+  <a class="display-8" href="{{ submission.paper_url }}" target="_blank" >Paper url  
+    <img src="{% static 'icons/overleaf.png' %}" alt="overleaf icon" class="img-fluid img-thumbnail"/>
   </a>
   <hr class="my-4">
 
+  <!-- a Progress bar-->
+  <div class="progress" style="background-color: lightgray">
+    <div class="progress-bar progress-bar-striped progress-bar-animated bg-{{submission.progress_background}}" role="progressbar"
+      style="width: {{submission.progress_percentage}}%; color: black;" aria-valuenow="{{submission.progress_percentage}}"
+      aria-valuemin="0" aria-valuemax="100">{{submission.progress_percentage}}%</div>
+  </div>
+
   <!-- Students of this Submission -->
-  <h4 class="display-8">Students:</h4>
+  <h4 class="display-8">Students working on this submission:</h4>
   <div class="col-sm">
     <ul class="list-group list-group-flush" style="background-color: transparent">
+      {% for student in students %}
       <li class="list-group-item " style="background-color: transparent">
         <h6> {{ student.name }} </h6>
       </li>
+      {% endfor %}
     </ul>
   </div>
-  {% endfor %}
+  
 
   <a class="btn btn-info btn-md" href="{% url 'submissions:submission_update' submission.id %}" role="button">Edit</a>
   <a class="btn btn-danger btn-md" href="{% url 'submissions:submission_delete' submission.id %}" role="button">Delete</a>
