@@ -6,8 +6,12 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
 
 # Custom imports
-from users.forms import StudentCreationForm, StudentChangeForm, AccountDeactivationForm, \
-    ReactivationForm
+from users.forms import (
+    StudentCreationForm,
+    StudentChangeForm,
+    AccountDeactivationForm,
+    ReactivationForm,
+)
 from .models import Student
 from events.models import Event
 from events.views import get_context
@@ -134,9 +138,11 @@ def show_profile(request):
     events = Event.objects.filter(students=request.user.id)
     # get context
     events = [get_context(t) for t in events]
-    
-    context = {"events": events,
-                "submissions": Submission.objects.filter(students=request.user.id)}
+
+    context = {
+        "events": events,
+        "submissions": Submission.objects.filter(students=request.user.id),
+    }
     return render(request, "profile.html", context)
 
 

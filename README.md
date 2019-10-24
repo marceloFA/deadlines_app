@@ -1,5 +1,8 @@
 # A Deadlines app
 
+[![Build Status](https://travis-ci.com/marceloFA/deadlines_app.svg?branch=master)](https://travis-ci.com/marceloFA/deadlines_app)
+[![codecov](https://codecov.io/gh/marceloFA/deadlines_app/branch/master/graph/badge.svg)](https://codecov.io/gh/marceloFA/deadlines_app)
+
 This is a small Django project to register and manage academic Deadlines
 
 Here are the current django apps that compose this project

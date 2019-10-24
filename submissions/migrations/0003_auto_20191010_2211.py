@@ -6,14 +6,17 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('submissions', '0002_submission_students'),
-    ]
+    dependencies = [("submissions", "0002_submission_students")]
 
     operations = [
         migrations.AlterField(
-            model_name='submission',
-            name='event',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='submission', to='events.Event'),
-        ),
+            model_name="submission",
+            name="event",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="submission",
+                to="events.Event",
+            ),
+        )
     ]

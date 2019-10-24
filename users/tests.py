@@ -66,7 +66,7 @@ class StudentRegister(TestCase):
 
     def test_register_student_success(self):
         register_data = {
-            "name": "a",
+            "name": "a name",
             "username": "a",
             "password1": "password",
             "password2": "password",

@@ -81,9 +81,10 @@ def event_done(request, pk):
         event = get_object_or_404(Event, pk=pk)
     else:
         event = get_object_or_404(Event, pk=pk, students=request.user)
-    event.is_done =  True
+    event.is_done = True
     event.save()
     return redirect(f"/events/{pk}")
+
 
 @login_required
 def event_undone(request, pk):
@@ -91,7 +92,7 @@ def event_undone(request, pk):
         event = get_object_or_404(Event, pk=pk)
     else:
         event = get_object_or_404(Event, pk=pk, students=request.user)
-    event.is_done =  False
+    event.is_done = False
     event.save()
     return redirect(f"/events/{pk}")
 
@@ -104,19 +105,23 @@ def filter_events(events):
     This method filter Event instances in two categories
     current events and past event, depending on the days_left field
      """
-    current_events = list(filter(lambda t: (t.days_left >= 0 and not t.is_done), events))
+    current_events = list(
+        filter(lambda t: (t.days_left >= 0 and not t.is_done), events)
+    )
     past_events = list(filter(lambda t: (t.days_left < 0 or t.is_done), events))
 
     return current_events, past_events
 
+
 def get_context(event):
-    '''
+    """
     Some context is required for each Event
-    '''
+    """
     event.days_left = get_days_left(event.deadline)
-    #event.progress_percentage = get_progress_percentage(event) # not necessary anymore as its a builtin model field now
+    # event.progress_percentage = get_progress_percentage(event) # not necessary anymore as its a builtin model field now
     event.progress_background = get_progress_background(event.progress_percentage)
     return event
+
 
 def get_days_left(deadline):
     """ Used to calculate how many days are left until a event deadline """
@@ -124,8 +129,9 @@ def get_days_left(deadline):
     days_left = (deadline - now).days
     return days_left
 
+
 # Old method of getting progress percentage, not used anymore
-#def get_progress_percentage(event):
+# def get_progress_percentage(event):
 #    """ Return the percentage of time left for a certain event based on its deadline date """
 #    created_at_date = event.created_at.date()
 #    total_days = (event.deadline - created_at_date).days

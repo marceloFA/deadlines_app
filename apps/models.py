@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class ModelWithTimeStamp(models.Model):
     """ safely adds create_at field to any model that inherits this """
 

@@ -10,13 +10,13 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('submissions', '0001_initial'),
+        ("submissions", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='submission',
-            name='students',
+            model_name="submission",
+            name="students",
             field=models.ManyToManyField(to=settings.AUTH_USER_MODEL),
-        ),
+        )
     ]
