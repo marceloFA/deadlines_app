@@ -4,38 +4,29 @@
 <!-- Event info -->
 
 <div class="jumbotron">
-  <h1 class="display-4">{{ event.name }}</h1>
-  <div class="progress" style="background-color: lightgray">
-    <div class="progress-bar progress-bar-striped progress-bar-animated bg-{{event.progress_background}}" role="progressbar"
-      style="width: {{event.progress_percentage}}%; color: black;" aria-valuenow="{{event.progress_percentage}}"
-      aria-valuemin="0" aria-valuemax="100">{{event.progress_percentage}}%</div>
-  </div>
+  <h2 class="display-4">{{ event.name }}</h2>
   <br>
-  <h4 class="display-8">{{ event.days_left|abs }} days {% if event.days_left >= 0 %} until deadline {% else %} past since deadline {% endif %}
+  <h4 class="display-8">
+    {{ event.days_left|abs }} days {% if event.days_left >= 0 %} until deadline {% else %} past since deadline {% endif %} at {{ event.deadline }}
   </h4>
-  <h4 class="display-8">{{ event.deadline }}</h4>
   <hr class="my-4">
-  <h4 class="display-8">Students:</h4>
+  <h4 class="display-8">Submissions on this event:</h4>
 
-  <!-- Students of this event -->
+  <!-- Submissions of this event -->
   <ul class="list-group list-group-flush my-4">
-    {% for student in students %}
+    {% for submission in submissions %}
       <li class="list-group-item ">
-        <h6> {{ student.name }} </h6>
+        <h6> {{ submission.paper_title }} <span class="badge badge-{{submission.status_background}}">{{ submission.get_status_display }}</span></h6>
       </li>
     {% empty %}
       <li  class="list-group-item">
-        No current students on this event
+        No current submissions on this event
       </li>
     {% endfor %}
   </ul>
-  <a class="btn btn-info btn-md" href="{% url 'events:event_update' event.id %}" role="button">Edit</a>
-  <a class="btn btn-danger btn-md" href="{% url 'events:event_delete' event.id %}" role="button">Delete</a>
-  {% if event.is_done %} 
-    <a class="btn btn-warning btn-md" href="{% url 'events:event_undone' event.id %}" role="button">Mark as undone</a>
-  {% else %}
-  <a class="btn btn-success btn-md" href="{% url 'events:event_done' event.id %}" role="button">Mark as done</a>
-  {% endif %}
+  <a class="btn btn-info" href="{% url 'events:event_update' event.id %}" role="button">Edit</a>
+  <a class="btn btn-danger" href="{% url 'events:event_delete' event.id %}" role="button">Delete</a>
+  <a class="btn btn-primary" href="{% url 'submissions:submission_new' event.id %}" role="button">Add new submisison for this event</a>
 </div>
 
 {% endblock %}

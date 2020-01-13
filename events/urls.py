@@ -10,6 +10,4 @@ urlpatterns = [
     path("new", views.event_create, name="event_new"),
     path("edit/<int:pk>", views.event_update, name="event_update"),
     path("delete/<int:pk>", views.event_delete, name="event_delete"),
-    path("done/<int:pk>", views.event_done, name="event_done"),
-    path("undone/<int:pk>", views.event_undone, name="event_undone"),
 ]

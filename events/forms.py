@@ -1,6 +1,5 @@
 from django import forms
 from events.models import Event
-from users.models import Student
 from bootstrap_datepicker_plus import DatePickerInput
 
 class EventForm(forms.ModelForm):
@@ -28,12 +27,5 @@ class EventForm(forms.ModelForm):
 
     deadline = forms.DateField(
         required=True, label="Deadline", widget=DatePickerInput(format="%Y-%m-%d")
-    )
-
-    progress_percentage =  forms.IntegerField(widget=forms.NumberInput(attrs={'min':0,'max':100,'type':'range', 'step':5}))
-
-    students = forms.ModelMultipleChoiceField(
-        queryset=Student.objects.filter(is_active=True),
-        widget=forms.CheckboxSelectMultiple,
     )
 

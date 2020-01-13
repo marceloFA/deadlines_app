@@ -5,12 +5,10 @@
 <!-- Current submissions -->
 <h1>Submissions</h1>
 
-
-
-<!--Submissions list-->
 <table class="table">
     <thead>
         <tr>
+            <th scope="col">Paper Title</th>
             <th scope="col">Event</th>
             <th scope="col">Status</th>
         </tr>
@@ -18,7 +16,8 @@
     <tbody>
         {% for submission in submissions %}
         <tr>
-            <th scope="row"><a href="{% url 'submissions:submission_detail' submission.id %}">{{ submission.event.name }}</a></th>
+            <th scope="row"><a href="{% url 'submissions:submission_detail' submission.id %}">{{ submission.paper_title|truncatechars:20 }}</a></th>
+            <th scope="row"><a href="{% url 'submissions:submission_detail' submission.event.id %}">{{ submission.event.name }}</a></th>
             <td><span class="badge badge-{{submission.status_background}}">{{ submission.get_status_display }}</span></td>
             
         </tr>
@@ -26,9 +25,6 @@
     </tbody>
 </table>
 
-<a href="{% url 'submissions:submission_new' %}">
-    <button type="button" class="btn btn-primary">New Submission</button>    
-</a>
 
 <!-- Submissions statistics card-->
 
