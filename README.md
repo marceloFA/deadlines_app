@@ -20,7 +20,7 @@ This project requires a few packages. To install them use the following command:
 
 Before running the application we need to create the needed DB tables:
 
-    /manage.py migrate
+    manage.py migrate
 
 Now you can run the development web server:
 
