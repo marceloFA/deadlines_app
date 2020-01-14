@@ -74,7 +74,7 @@ def event_delete(request, pk, template_name="events/event_confirm_delete.html"):
     if request.user.is_superuser:
         event = get_object_or_404(Event, pk=pk)
     else:
-        event = get_object_or_404(Event, pk=pk, students=request.user)
+        event = get_object_or_404(Event, pk=pk)
     if request.method == "POST":
         event.delete()
         return redirect("events:event_list")

@@ -92,10 +92,7 @@ def submission_update(request, pk, template_name="submissions/submission_form.ht
 
 @login_required
 def submission_delete(request, pk, template_name="submissions/submission_confirm_delete.html"):
-    if request.user.is_superuser:
-        submission = get_object_or_404(Submission, pk=pk)
-    else:
-        submission = get_object_or_404(Submission, pk=pk)
+    submission = get_object_or_404(Submission, pk=pk)
     
     if request.method == "POST":
         submission.delete()

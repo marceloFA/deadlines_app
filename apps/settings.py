@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     "bootstrap4",
     "bootstrap_datepicker_plus",
     "users.apps.UsersConfig",
-    "events",
     "mathfilters",
+    "events",
     "submissions",
     "django_extensions",
 ]
