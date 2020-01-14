@@ -7,7 +7,7 @@ class Submission(ModelWithTimeStamp):
     ''' This model stores informations about academic event submissions '''
     STATUS_CHOICES = (
         ('0', "In Writting Process"),
-        ("1", "Not yet defined"),
+        ("1", "Not submitted"),
         ("2", "Under Revision"),
         ("3", "Accepted"),
         ("4", "Rejected"),
