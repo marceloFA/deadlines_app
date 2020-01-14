@@ -10,34 +10,70 @@
   <!--event name and submission status-->
   <h4 class="display-8">A submission for <strong>{{ submission.event.name|truncatechars:20 }}</strong> | <span class="badge badge-{{submission.status_background}}">{{ submission.get_status_display }}</span></h4>
   <br>
-  <!--overlaf anchor and image-->
-  <a class="display-8" href="{{ submission.paper_url }}" target="_blank" >Paper url  
-    <img src="{% static 'icons/overleaf.png' %}" alt="overleaf icon" class="img-fluid img-thumbnail"/>
-  </a>
-  <hr class="my-4">
 
-  <!-- a Progress bar-->
+  <!-- Progress bar-->
   <div class="progress" style="background-color: lightgray">
-    <div class="progress-bar progress-bar-striped progress-bar-animated bg-{{submission.progress_background}}" role="progressbar"
-      style="width: {{submission.progress_percentage}}%; color: black;" aria-valuenow="{{submission.progress_percentage}}"
+    <div id="progress-percentage" class="progress-bar progress-bar-striped progress-bar-animated bg-{{submission.progress_background}}" role="progressbar"
+      style="width: {{submission.progress_percentage}}%;" aria-valuenow="{{submission.progress_percentage}}"
       aria-valuemin="0" aria-valuemax="100">{{submission.progress_percentage}}%</div>
   </div>
+
+  <!-- Row with three cards -->
+  <div class="card-deck">
+    <!--card 1: paper url-->
+    <div class="card">
+      <a href="{{ submission.paper_url }}">
+      <div class="card-body">
+        <h5 class="card-title">Paper on Overleaf</h5>
+        <p class="card-text">Papers are preferably written using Overleaf. Here you can check the paper pdf and source code.</p>
+        <p class="card-text"><small class="text-muted">You may need the authors' permission to see this</small></p>
+      </div>
+    </a>
+    </div>
+
+    <!--card 2: paper presentation-->
+    <div class="card">
+      <a href="{{ submission.presentation_url }}">
+      <div class="card-body">
+        <h5 class="card-title">Presentation Slides</h5>
+        <p class="card-text">Here you can find the slides for the presentation of this sbumission</p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+      </div>
+    </a>
+    </div>
+
+    <!--card 3: paper rebuttal-->
+    <div class="card">
+      <a href="{{ submission.rebuttal_url }}">
+      <div class="card-body">
+        <h5 class="card-title">Rebttal</h5>
+        <p class="card-text">Rebuttal is the feedback text from the submission reviwers</p>
+      </div>
+    </a>
+    </div>
+  
+  </div>
+  
+
+  <hr class="my-4" style="color:grey;">
 
   <!-- Students of this Submission -->
   <h4 class="display-8">Students working on this submission:</h4>
   <div class="col-sm">
-    <ul class="list-group list-group-flush" style="background-color: transparent">
+    <ul class="list-group list-group-flush">
       {% for student in students %}
-      <li class="list-group-item " style="background-color: transparent">
+      <li class="list-group-item" style="background-color: transparent">
         <h6> {{ student.name }} </h6>
       </li>
       {% endfor %}
     </ul>
   </div>
   
-
-  <a class="btn btn-info btn-md" href="{% url 'submissions:submission_update' submission.id %}" role="button">Edit</a>
-  <a class="btn btn-danger btn-md" href="{% url 'submissions:submission_delete' submission.id %}" role="button">Delete</a>
+  <!-- Edit and Delete buttons -->
+  <div class="float-right alter-buttons">
+    <a class="btn btn-outline-warning btn-md mx-1" href="{% url 'submissions:submission_update' submission.id %}" role="button">Edit</a>
+    <a class="btn btn-outline-danger btn-md mx-1" href="{% url 'submissions:submission_delete' submission.id %}" role="button">Delete</a>
+  </div>
 </div>
 
 {% endblock %}

@@ -21,6 +21,10 @@ class Submission(ModelWithTimeStamp):
 
     paper_acronym = models.CharField(max_length=100, blank=True, null=True) 
 
-    paper_url = models.CharField(max_length=300, blank=True, null=True)
+    paper_url = models.CharField(max_length=400, blank=True, null=True)
+
+    presentation_url = models.CharField(max_length=400, blank=True, null=True)
+
+    rebuttal_url = models.CharField(max_length=400, blank=True, null=True)
 
     progress_percentage = models.IntegerField(default=0)

@@ -1,0 +1,38 @@
+.btn-outline-default{
+    border-color: #aaa;
+  }
+
+  .btn-outline-primary{
+    border-color: #0062cc;
+    color:#0062cc;
+  }
+
+  .btn-outline-primary:hover{
+    background-color:#0062cc;
+    color: white;
+  }
+
+  .btn-outline-warning{
+    border-color: #f89406;
+  }
+
+  .btn-outline-danger{
+    border-color: #ee5f5b;
+  }
+
+
+/* Submission details */
+#progress-percentage{
+  color:black;
+  font-size:16px;
+  font-weight: bold;
+}
+
+.card a{
+  text-decoration: none;
+}
+
+.card-deck{
+  margin-top:55px;
+  margin-bottom:60px;
+}
