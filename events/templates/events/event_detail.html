@@ -16,7 +16,7 @@
   <ul class="list-group list-group-flush my-4">
     {% for submission in submissions %}
       <li class="list-group-item ">
-        <h6> {{ submission.paper_title }} <span class="badge badge-{{submission.status_background}}">{{ submission.get_status_display }}</span></h6>
+        <h6> {{ submission.paper_acronym }} <span class="badge badge-{{submission.status_background}}">{{ submission.get_status_display }}</span></h6>
       </li>
     {% empty %}
       <li  class="list-group-item">

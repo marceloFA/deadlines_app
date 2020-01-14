@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='submission',
-            name='paper_title',
+            name='paper_acronym',
             field=models.CharField(blank=True, max_length=300, null=True),
         ),
         migrations.AddField(

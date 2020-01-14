@@ -26,7 +26,7 @@ class SubmissionForm(forms.ModelForm):
     paper_url = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'special'}))
 
     # Paper Title
-    paper_title = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'special'}))
+    paper_acronym = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'special'}))
 
     # Progress Percentage
     progress_percentage =  forms.IntegerField(widget=forms.NumberInput(attrs={'min':0,'max':100,'type':'range', 'step':5}))

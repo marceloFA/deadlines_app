@@ -16,7 +16,7 @@
     {% for submission in submissions %}    
       <li  class="list-group-item">
         <a href="{% url 'submissions:submission_detail' submission.id %}">
-          {{ submission.paper_title|truncatechars:10 }}
+          {{ submission.paper_acronym|truncatechars:10 }}
         </a>
         on
         <a href="{% url 'events:event_detail' submission.event.id %}">
