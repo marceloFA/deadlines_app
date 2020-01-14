@@ -5,8 +5,9 @@ from django.contrib import messages
 
 # Custom imports
 from submissions.models import Submission
-from submissions.forms import SubmissionForm
+from submissions.forms import SubmissionForm, EditSubmissionForm
 from users.models import Student
+from events.models import Event
 
 
 
@@ -49,12 +50,14 @@ def submission_list(request, template_name="submissions/submission_list.html"):
 @login_required
 def submission_create(request, event_pk, template_name="submissions/submission_form.html"):
     
-    form = SubmissionForm(event_pk, request.POST or None)
-    
+    form = SubmissionForm(request.POST or None)
+    event = Event.objects.get(id=event_pk)
+
     if request.POST:
         if form.is_valid():
             submission = form.save(commit=False)
             submission.user = request.user
+            submission.event = event
             submission.save()
             form.save_m2m()
             new_submission_message = "Created submission successfully"
@@ -64,7 +67,7 @@ def submission_create(request, event_pk, template_name="submissions/submission_f
             for msg in form._errors:
                 messages.error(request, f"{form._errors[msg]}")
 
-    return render(request, template_name, {"form": form})
+    return render(request, template_name, {"form": form, "event":event})
 
 
 @login_required
@@ -74,8 +77,7 @@ def submission_update(request, pk, template_name="submissions/submission_form.ht
     else:
         submission = get_object_or_404(Submission, pk=pk)
 
-    event_id = submission.event.id
-    form = SubmissionForm(event_id, request.POST or None, instance=submission)
+    form = EditSubmissionForm(request.POST or None, instance=submission)
 
     if request.POST:
         if form.is_valid():

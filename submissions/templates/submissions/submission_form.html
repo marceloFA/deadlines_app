@@ -3,12 +3,7 @@
 
 {% block content %}
     <form method="post" class="form">
-        <h2>
-            <a href="{% url 'submissions:submission_list' %}">
-                Submission
-            </a>: Edit
-        </h2>
-
+        <h2>Creating/Editing a new submission for {{ event.name }}</h2>
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}

@@ -7,25 +7,15 @@ from users.models import Student
 class SubmissionForm(forms.ModelForm):
     class Meta:
         model = Submission
-        fields = "__all__"
+        exclude = ['event']
 
-    def __init__(self, event_id, *args, **kwargs):
-        super(SubmissionForm, self).__init__(*args, **kwargs)
-        self.fields['event'].queryset = Event.objects.filter(id=event_id)
-
+    
     # Students associated with this submission
     students = forms.ModelMultipleChoiceField(
         label='Select the students associated with this submission',
         queryset=Student.objects.filter(is_active=True),
         widget=forms.CheckboxSelectMultiple,
     )
-
-
-    # The event that got a submission
-    event = forms.ModelChoiceField(
-        label='What event is associated with this submission?',
-        queryset=None # defined by the __init__ method
-        )
 
     # Submission status 
     status = forms.CharField(
@@ -40,3 +30,9 @@ class SubmissionForm(forms.ModelForm):
 
     # Progress Percentage
     progress_percentage =  forms.IntegerField(widget=forms.NumberInput(attrs={'min':0,'max':100,'type':'range', 'step':5}))
+
+
+class EditSubmissionForm(SubmissionForm):
+    class Meta:
+        model = Submission
+        fields = '__all__'
