@@ -32,7 +32,7 @@ def submission_detail(request, pk, template_name="submissions/submission_detail.
 @login_required
 def submission_list(request, template_name="submissions/submission_list.html"):
     
-    current_submissions, past_submissions = get_submissions_and_context(submissions)
+    current_submissions, past_submissions = get_submissions_and_context()
     
     # TODO: refactor this into something better
     for sub in past_submissions:
