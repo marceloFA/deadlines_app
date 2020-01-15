@@ -1,5 +1,5 @@
 # A Deadlines app
-
+![Deadlines App Homepage](https://raw.githubusercontent.com/marcelofa/deadlines_app/master/banner.png)
 This is a small Django project to register and manage academic Deadlines
 
 Here are the current django apps that compose this project
