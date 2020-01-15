@@ -29,7 +29,7 @@ def submission_detail(request, pk, template_name="submissions/submission_detail.
     return render(request, template_name, context)
 
 
-
+@login_required
 def submission_list(request, template_name="submissions/submission_list.html"):
     
     submissions = Submission.objects.all()
