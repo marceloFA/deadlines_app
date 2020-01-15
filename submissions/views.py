@@ -129,7 +129,7 @@ def submission_undone(request, pk):
 def get_statistics():
     ''' This method get some statistics on the Submission instances '''
     # Only submission with status__in the values below are accounted for statistics
-    n_submitted = Submission.objects.filter(status__in=[2,3,4]).count()
+    n_submitted = Submission.objects.filter(status__in=[3,4]).count()
     n_approved = Submission.objects.filter(status=3).count()
     approval_rate = 0
     if n_submitted > 0:
