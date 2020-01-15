@@ -12,6 +12,7 @@
             <th scope="col">Event</th>
             <th scope="col">Days Left</th>
             <th scope="col">Deadline</th>
+            <th scope="col">Qualis</th>
         </tr>
     </thead>
     <tbody>
@@ -20,6 +21,7 @@
             <th scope="row"><a href="{% url 'events:event_detail' event.id %}">{{ event.name }}</a></th>
             <td>{{ event.days_left }}</td>
             <td>{{ event.deadline }}</td>
+            <td>{{ event.qualis }}</td>
         </tr>
         {% endfor %}
     </tbody>
@@ -40,6 +42,7 @@
             <th scope="col">Event</th>
             <th scope="col">Days Passed</th>
             <th scope="col">Deadline</th>
+            <th scope="col">Qualis</th>
         </tr>
     </thead>
     <tbody>
@@ -48,7 +51,7 @@
             <th scope="row"><a href="{% url 'events:event_detail' event.id %}">{{ event.name }}</a></th>
             <td>{{ event.days_left|abs }}</td> <!-- This is acctually a DAYS PASSED field -->
             <td>{{ event.deadline }}</td>
-            <td></td>
+            <td>{{ event.qualis }}</td>
         </tr>
         {% endfor %}
     </tbody>
