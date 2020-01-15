@@ -20,7 +20,7 @@ def event_detail(request, pk, template_name="events/event_detail.html"):
     
     
     submissions = Submission.objects.filter(event=event)
-    event = get_context(event)
+    event = get_events_context(event)
 
     for sub in submissions:
         sub.status_background = get_status_background(sub.status)
@@ -34,7 +34,7 @@ def event_list(request, template_name="events/event_list.html"):
     events = Event.objects.all()
     context = {}
 
-    events = [get_context(t) for t in events]
+    events = [get_events_context(t) for t in events]
 
     context["current_events"], context["past_events"] = filter_events(events)
 
@@ -92,7 +92,7 @@ def filter_events(events):
 
     return current_events, past_events
 
-def get_context(event):
+def get_events_context(event):
     '''
     Some context is required for each Event
     '''

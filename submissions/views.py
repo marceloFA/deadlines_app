@@ -32,20 +32,25 @@ def submission_detail(request, pk, template_name="submissions/submission_detail.
 @login_required
 def submission_list(request, template_name="submissions/submission_list.html"):
     
-    submissions = Submission.objects.all()
+    current_submissions, past_submissions = get_submissions_and_context(submissions)
+    
+    # TODO: refactor this into something better
+    for sub in past_submissions:
+        sub.status_background = get_status_background(sub.status)
+    for sub in current_submissions:
+        sub.status_background = get_status_background(sub.status)
+    
     n_submitted, approval_rate = get_statistics()
 
-    for sub in submissions:
-        sub.status_background = get_status_background(sub.status)
-
     context = {
-        'submissions': submissions,
+        'past_submissions': past_submissions,
+        'current_submissions': current_submissions,
         'total_submissions':n_submitted,
         'approval_rate': approval_rate,
     }
 
     return render(request, template_name, context)
-
+    
 
 @login_required
 def submission_create(request, event_pk, template_name="submissions/submission_form.html"):
@@ -124,6 +129,14 @@ def submission_undone(request, pk):
     submission.save()
     return redirect(f"/submissions/{pk}")
 
+
+def get_submissions_and_context():
+    """ Sometimes submissions need a context before 
+        they're sent to the template """
+    
+    current_submissions = Submission.objects.filter(status__in=[0,1,2])
+    past_submissions = Submission.objects.filter(status__in=[3,4])
+    return current_submissions, past_submissions
 
 
 def get_statistics():

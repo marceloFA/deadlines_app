@@ -10,8 +10,10 @@ from users.forms import StudentCreationForm, StudentChangeForm, AccountDeactivat
     ReactivationForm
 from .models import Student
 from events.models import Event
-from events.views import get_context
+from events.views import get_events_context, filter_events
 from submissions.models import Submission
+from submissions.views import get_submissions_and_context
+
 
 
 def register(request):
@@ -131,9 +133,19 @@ def reactivate(request):
 @login_required
 def show_profile(request):
     # Load related Events and submissions
-    submissions = request.user.submissions.all()
     
-    context = {"submissions": submissions}
+    current_submissions, past_submissions = get_submissions_and_context()
+    
+    events = [get_events_context(event) for event in Event.objects.all()]
+    current_events, past_events = filter_events(events)
+
+    context = {
+        "current_submissions": current_submissions,
+        "past_submissions": past_submissions,
+        "current_events": current_events,
+        "past_events": past_events,
+        }
+
     return render(request, "profile.html", context)
 
 

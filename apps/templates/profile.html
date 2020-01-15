@@ -11,12 +11,14 @@
 <div class="hero-unit">
   <h2 class="my-2">Profile page</h2>
   <hr>
-  <h4 class="my-2">Submisisons you are involved in:</h4>
+
+  <!-- Current Submissions -->
+  <h4 class="my-2">Your current submissions:</h4>
   <ul class="list-group list-group-flush">
-    {% for submission in submissions %}    
+    {% for submission in current_submissions %}    
       <li  class="list-group-item">
         <a href="{% url 'submissions:submission_detail' submission.id %}">
-          {{ submission.paper_acronym|truncatechars:10 }}
+          {{ submission.paper_acronym|truncatechars:30 }}
         </a>
         on
         <a href="{% url 'events:event_detail' submission.event.id %}">
@@ -29,6 +31,28 @@
       </li>
     {% endfor %}
   </ul>
+  <br/>
+  <!-- Past Submissions -->
+  <h4 class="my-2">Your finished submissions:</h4>
+  <ul class="list-group list-group-flush">
+    {% for submission in past_submissions %}    
+      <li  class="list-group-item">
+        <a href="{% url 'submissions:submission_detail' submission.id %}">
+          {{ submission.paper_acronym|truncatechars:30 }}
+        </a>
+        on
+        <a href="{% url 'events:event_detail' submission.event.id %}">
+            {{ submission.event.name }}
+        </a>
+      </li>
+    {% empty %}
+      <li  class="list-group-item">
+        You have no past submissions.
+      </li>
+    {% endfor %}
+  </ul>
+  <br/>
+
   <a class="btn btn-primary btn-sm my-4 " href="{% url 'edit_profile' user.id %}">
     Edit your profile
   </a>
