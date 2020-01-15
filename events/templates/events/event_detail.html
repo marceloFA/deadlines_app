@@ -9,6 +9,7 @@
   <h4 class="display-8">
     {{ event.days_left|abs }} days {% if event.days_left >= 0 %} until deadline {% else %} past since deadline {% endif %} at {{ event.deadline }}
   </h4>
+  <p class="lead">Type: {{event.get_type_display}}</p>
   <hr class="my-4">
   <h4 class="display-8">Submissions on this event:</h4>
 

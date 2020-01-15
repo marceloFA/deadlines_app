@@ -8,7 +8,7 @@
   <h2 class="display-4"> {{ submission.paper_acronym }}</h2>
   <br>
   <!--event name and submission status-->
-  <h4 class="display-8">A submission for <strong>{{ submission.event.name|truncatechars:20 }}</strong> | <span class="badge badge-{{submission.status_background}}">{{ submission.get_status_display }}</span></h4>
+  <h4 class="display-8">A submission for <strong>{{ submission.event.name|truncatechars:20 }}</strong> | <span class="badge badge-{{submission.status_background}}">{{ submission.get_status_display }}</span> </h4>
   <br>
 
   <!-- Progress bar-->

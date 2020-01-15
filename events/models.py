@@ -21,9 +21,20 @@ class Event(ModelWithTimeStamp):
         ("", "Does not apply"),
     )
 
+    TYPE_CHOICES = (
+        ("1", "Periodic"),
+        ("2", "National Conference"),
+        ("3", "International Conference"),
+        ("4", "Journal"),
+        ("4", "Workshops"),
+        ("5", "Seminars"),
+        ("6", "Others")
+    )
+
     name = models.CharField(max_length=200)
     url = models.CharField(max_length=500, null=True, blank=True)
     qualis = models.CharField(max_length=10, choices=QUALIS_CHOICES)
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES, null=True, blank=True)
     deadline = models.DateField()
     
 

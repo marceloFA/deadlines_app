@@ -25,6 +25,10 @@ class EventForm(forms.ModelForm):
         label="Qualis", widget=forms.Select(choices=Event.QUALIS_CHOICES)
     )
 
+    type = forms.CharField(
+        label="Type", widget=forms.Select(choices=Event.TYPE_CHOICES)
+    )
+
     deadline = forms.DateField(
         required=True, label="Deadline", widget=DatePickerInput(format="%Y-%m-%d")
     )
