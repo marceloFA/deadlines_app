@@ -31,6 +31,7 @@
     </a>
     </div>
 
+    {% if submission.presentation_url %}
     <!--card 2: paper presentation-->
     <div class="card">
       <a href="{{ submission.presentation_url }}">
@@ -41,8 +42,10 @@
       </div>
     </a>
     </div>
+    {% endif %}
 
     <!--card 3: paper rebuttal-->
+    {% if presentation.rebuttal_url %}
     <div class="card">
       <a href="{{ submission.rebuttal_url }}">
       <div class="card-body">
@@ -51,7 +54,8 @@
       </div>
     </a>
     </div>
-  
+    {% endif %}
+    
   </div>
   
 

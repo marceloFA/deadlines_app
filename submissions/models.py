@@ -19,7 +19,7 @@ class Submission(ModelWithTimeStamp):
 
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='0')
 
-    paper_acronym = models.CharField(max_length=100, blank=True, null=True) 
+    paper_acronym = models.CharField(max_length=100, blank=False) 
 
     paper_url = models.CharField(max_length=400, blank=True, null=True)
 

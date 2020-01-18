@@ -15,6 +15,7 @@ class SubmissionForm(forms.ModelForm):
         label='Select the students associated with this submission',
         queryset=Student.objects.filter(is_active=True),
         widget=forms.CheckboxSelectMultiple,
+        required=True
     )
 
     # Submission status 
@@ -25,8 +26,8 @@ class SubmissionForm(forms.ModelForm):
     # Paper url
     paper_url = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'special'}))
 
-    # Paper Title
-    paper_acronym = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'special'}))
+    # Paper Acornym
+    paper_acronym = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'special'}))
 
     # Progress Percentage
     progress_percentage =  forms.IntegerField(widget=forms.NumberInput(attrs={'min':0,'max':100,'type':'range', 'step':5}))
