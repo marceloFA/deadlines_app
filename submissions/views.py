@@ -18,8 +18,7 @@ def submission_detail(request, pk, template_name="submissions/submission_detail.
     except Submission.DoesNotExist:
         raise Http404("This submission does not exist :0")
 
-    submission.status_background = get_status_background(submission.status)
-    submission.progress_background = get_progress_background(submission.progress_percentage)
+    submission = get_aditional_info(submission)
 
     context = {
         'submission': submission,
@@ -33,13 +32,6 @@ def submission_detail(request, pk, template_name="submissions/submission_detail.
 def submission_list(request, template_name="submissions/submission_list.html"):
     
     current_submissions, past_submissions = get_submissions_and_context()
-    
-    # TODO: refactor this into something better
-    for sub in past_submissions:
-        sub.status_background = get_status_background(sub.status)
-    for sub in current_submissions:
-        sub.status_background = get_status_background(sub.status)
-    
     n_submitted, approval_rate = get_statistics()
 
     context = {
@@ -131,13 +123,31 @@ def submission_undone(request, pk):
 
 
 def get_submissions_and_context():
-    """ Sometimes submissions need a context before 
-        they're sent to the template """
+    """ Separate submissions according to their status and get their aditional info """
     
     current_submissions = Submission.objects.filter(status__in=[0,1,2])
     past_submissions = Submission.objects.filter(status__in=[3,4])
+
+    for submission in current_submissions:
+        submission = get_aditional_info(submission)
+    
+    for submission in past_submissions:
+        submission = get_aditional_info(submission)
+
     return current_submissions, past_submissions
 
+def get_aditional_info(submission):
+    """ Used to get aditional info for a submission
+        currently aditional info includes:
+        - progress bar percentage of submission completion 
+        - progress bar background color
+        - status background color
+    """
+    submission.progress_percentage = get_progress_percentage(submission)
+    submission.status_background = get_status_background(submission.status)
+    submission.progress_background = get_progress_background(submission.progress_percentage)
+
+    return submission
 
 def get_statistics():
     ''' This method get some statistics on the Submission instances '''
@@ -173,7 +183,7 @@ def get_status_background(status):
 
 def get_progress_background(progress):
     """
-    Gets the appropriate background color for a given amount of progress made in a submisison
+    Gets the appropriate background color for a given amount of progress made in a submission
     :param progress: the amount of progress between the start date and the ending date (0-100)
     :return: a string representing the corresponding color for a background with the given amount of progress
     """
@@ -187,3 +197,23 @@ def get_progress_background(progress):
         color = "danger"
 
     return color
+
+def get_progress_percentage(submission):
+    ''' Given the checklist of a submission 
+    calculate how much of it is completed '''
+    progress_percentage = 0
+
+    if submission.get_status_display() == "Accepted":
+        progress_percentage = 100
+        return progress_percentage
+    else:
+        progress_percentage += 25 if submission.implementation_done else 0
+        progress_percentage += 10 if submission.paper_introduction_done else 0
+        progress_percentage += 10 if submission.paper_related_works_done else 0
+        progress_percentage += 10 if submission.paper_proposal_done else 0
+        progress_percentage += 10 if submission.paper_results_done else 0
+        progress_percentage += 25 if submission.paper_figures_done else 0
+        progress_percentage += 10 if submission.paper_professors_revision_done else 0
+
+    return progress_percentage
+

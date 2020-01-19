@@ -8,7 +8,6 @@ class SubmissionForm(forms.ModelForm):
     class Meta:
         model = Submission
         exclude = ['event']
-
     
     # Students associated with this submission
     students = forms.ModelMultipleChoiceField(
@@ -29,8 +28,6 @@ class SubmissionForm(forms.ModelForm):
     # Paper Acornym
     paper_acronym = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'special'}))
 
-    # Progress Percentage
-    progress_percentage =  forms.IntegerField(widget=forms.NumberInput(attrs={'min':0,'max':100,'type':'range', 'step':5}))
 
 
 class EditSubmissionForm(SubmissionForm):

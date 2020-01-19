@@ -1,0 +1,38 @@
+<div class="form-inline my-4 mx-auto">
+    <!-- Paper related column-->
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class=" custom-control-input" id="a" {% if submission.paper_proposal_done %} checked {% else %} unchecked {% endif %} disabled>
+      <label class="mx-3 custom-control-label" for="a">Proposal</label>
+    </div>
+
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class=" custom-control-input" id="2" {% if submission.paper_introduction_done %} checked {% else %} unchecked {% endif %} disabled>
+      <label class="mx-3 custom-control-label" for="2">Introduction</label>
+    </div>
+
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="3" {% if submission.paper_related_works_done %} checked {% else %} unchecked {% endif %} disabled>
+      <label class="mx-3 custom-control-label" for="3">Related works</label>
+    </div>
+
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="4" {% if submission.paper_results_done %} checked {% else %} unchecked {% endif %} disabled>
+      <label class="mx-3 custom-control-label" for="4">Results</label>
+    </div>
+
+    <!-- Other activities column-->
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="5" {% if submission.paper_figures_done %} checked {% else %} unchecked {% endif %} disabled>
+      <label class="mx-3 custom-control-label" for="5">Figures</label>
+    </div>
+
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="6" {% if submission.implementation_done %} checked {% else %} unchecked {% endif %} disabled>
+      <label class="mx-3 custom-control-label" for="6">Implementation</label>
+    </div>
+
+    <div class="custom-control custom-checkbox">  
+      <input type="checkbox" class="custom-control-input" id="7" {% if submission.paper_professors_revision_done %} checked {% else %} unchecked {% endif %} disabled>
+      <label class="mx-3 custom-control-label" for="7">Professor's final revision</label>
+    </div>
+  </div>

@@ -27,4 +27,12 @@ class Submission(ModelWithTimeStamp):
 
     rebuttal_url = models.CharField(max_length=400, blank=True, null=True)
 
-    progress_percentage = models.IntegerField(default=0)
+    # Checklist fields ( related to the progress bar )
+    implementation_done = models.BooleanField(blank=False, default=False)
+    paper_introduction_done = models.BooleanField(blank=False, default=False)
+    paper_related_works_done = models.BooleanField(blank=False, default=False)
+    paper_proposal_done = models.BooleanField(blank=False, default=False)
+    paper_results_done = models.BooleanField(blank=False, default=False)
+    paper_figures_done = models.BooleanField(blank=False, default=False)
+    paper_professors_revision_done = models.BooleanField(blank=False, default=False)
+    
