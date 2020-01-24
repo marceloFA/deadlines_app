@@ -9,6 +9,7 @@
   <h4 class="display-8">
     {{ event.days_left|abs }} days {% if event.days_left >= 0 %} until deadline {% else %} past since deadline {% endif %} at {{ event.deadline }}
   </h4>
+  <h4><a href="{{ event.url }}" target="_blank">Event URL</a></h4>
   <p class="lead">Type: {{event.get_type_display}}</p>
   <hr class="my-4">
   <h4 class="display-8">Submissions on this event:</h4>
@@ -17,7 +18,7 @@
   <ul class="list-group list-group-flush my-4">
     {% for submission in submissions %}
       <li class="list-group-item ">
-        <h6> {{ submission.paper_acronym }} <span class="badge badge-{{submission.status_background}}">{{ submission.get_status_display }}</span></h6>
+        <a href="{% url 'submissions:submission_detail' submission.id %}"> {{ submission.paper_acronym }} </a><span class="badge badge-{{submission.status_background}}">{{ submission.get_status_display }}</span>
       </li>
     {% empty %}
       <li  class="list-group-item">
@@ -25,9 +26,11 @@
       </li>
     {% endfor %}
   </ul>
-  <a class="btn btn-info" href="{% url 'events:event_update' event.id %}" role="button">Edit</a>
-  <a class="btn btn-danger" href="{% url 'events:event_delete' event.id %}" role="button">Delete</a>
-  <a class="btn btn-primary" href="{% url 'submissions:submission_new' event.id %}" role="button">Add new submisison for this event</a>
+  <div class="my-4">
+    <a class="btn btn-info" href="{% url 'events:event_update' event.id %}" role="button">Edit</a>
+    <a class="btn btn-danger" href="{% url 'events:event_delete' event.id %}" role="button">Delete</a>
+    <a class="btn btn-primary" href="{% url 'submissions:submission_new' event.id %}" role="button">Add new submission</a>
+  </div>
 </div>
 
 {% endblock %}
