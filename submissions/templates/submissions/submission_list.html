@@ -60,9 +60,21 @@
     <div class="card-body">
       <h5 class="card-title">Statistics</h5>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item">Total Submissions: {{total_submissions}}</li>
-        <li class="list-group-item">Approval Rate: {{approval_rate}}%</li>
+        <li class="list-group-item">Total Submissions: {{ total_submissions }}</li>
+        <li class="list-group-item">Approval Rate: {{ approval_rate }}%</li>
       </ul>
     </div>
   </div>
+
+  <script>
+    $(document).ready(function() {
+        $('.table').DataTable({
+            "order": [[ 1, "asc" ]],
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bFilter": true,
+            "bInfo": false,
+            "bAutoWidth": false });
+        });
+</script>
 {% endblock %}
