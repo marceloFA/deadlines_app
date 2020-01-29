@@ -122,11 +122,17 @@ def submission_undone(request, pk):
     return redirect(f"/submissions/{pk}")
 
 
-def get_submissions_and_context():
+def get_submissions_and_context(student_id=None):
     """ Separate submissions according to their status and get their aditional info """
-    
-    current_submissions = Submission.objects.filter(status__in=[0,1,2])
-    past_submissions = Submission.objects.filter(status__in=[3,4])
+    current_status = [0,1,2]
+    past_status = [3,4]
+
+    if student_id:
+        current_submissions = Submission.objects.filter(students=student_id).exclude(status__in=current_status)
+        past_submissions = Submission.objects.filter(students=student_id).exclude(status__in=past_status)
+    else:
+        current_submissions = Submission.objects.filter(status__in=current_status)
+        past_submissions = Submission.objects.filter(status__in=past_status)
 
     for submission in current_submissions:
         submission = get_aditional_info(submission)
