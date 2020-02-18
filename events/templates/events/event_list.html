@@ -63,11 +63,12 @@
     $(document).ready(function() {
         $('.table').DataTable({
             "order": [[ 1, "asc" ]],
-            "bPaginate": false,
-            "bLengthChange": false,
+            "bPaginate": true,
+            "bLengthChange": true,
             "bFilter": true,
             "bInfo": false,
-            "bAutoWidth": false });
+            "dom": '<lfp<t>i>',
+            "bAutoWidth": true });
         });
 </script>
 
