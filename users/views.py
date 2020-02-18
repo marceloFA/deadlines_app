@@ -134,10 +134,10 @@ def reactivate(request):
 def show_profile(request):
     # Load related Events and submissions
     
-    current_submissions, past_submissions = get_submissions_and_context(request.user.id)
+    past_submissions, current_submissions = get_submissions_and_context(request.user.id)
     
     events = [get_events_context(event) for event in Event.objects.all()]
-    current_events, past_events = filter_events(events)
+    past_events, current_events  = filter_events(events)
 
     context = {
         "current_submissions": current_submissions,
